@@ -60,7 +60,7 @@ created () {
   })
 }
 ```
-### `<node-cache>`
+### `<vnode-cache>`
 
 Instantiation `vue-app-effect` and then you can use `<vnode-cache></vnode-cache>` non-navigational menu cache management，similar to the `<keep-alive>`
 
