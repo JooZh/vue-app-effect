@@ -50,25 +50,27 @@ export default (bus, tabbar) => {
     },
     methods: {
       reverse () {
-        let path = this.paths.pop()
+        let beforePath = this.paths.pop()
         let routes = this.$router.options.routes
-        // console.log('删除前：', this.cache)
+        // 查询是不是导航路由
         let findTo = this.tabBar.findIndex(item => item === this.$route.fullPath)
-        // 删除上一个路由
-        let findRouterIndex = routes.findIndex(item => item.path === path)
+        // 查询当前路由在路由列表中的位置
+        let findRouterIndex = routes.findIndex(item => item.path === beforePath)
+        // 当不是导航路由，并且不是默认配置路由
         if (findTo === -1 && findRouterIndex >= this.routerLen) {
+          // 删除路由
           this.$router.options.routes.pop()
           // this.$router.addRoutes([])
-          delete window.sessionStorage[path]
+          // 清除对应历史记录
+          delete window.sessionStorage[beforePath]
           window.sessionStorage.count -= 1
         }
-        // 删除上一个缓存
-        let key = findTo === -1 ? this.$route.fullPath : '/tab-bar'
+        // 当不是导航的时候 删除上一个缓存
+        let key = findTo === -1 ? this.$route.fullPath : ''
         if (this.cache[key]) {
-          this.cache[path].componentInstance.$destroy()
-          delete this.cache[path]
+          this.cache[beforePath].componentInstance.$destroy()
+          delete this.cache[beforePath]
         }
-        // console.log(window.sessionStorage)
         // console.log('删除后：', this.cache)
       }
     },

@@ -1,66 +1,68 @@
 # vue-app-effect
-实现模拟原生app页面切换效果和缓存效果的前端设计方案, 行为上模拟了app的操作模式，前进刷新，后退缓存，保存数据和页面状态。并且可以始终保存tab菜单页面的内容不会被路由切换清除。
+The front-end design scheme is designed to simulate the switching effect and caching effect of the native App page. The operation mode of the App is simulated on the behavior, and the data and page state are saved by forward refreshing and back caching. And you can always save the content of the TAB menu page without being cleared by the router switch.
 
-## 使用前提
-需要 vue 2.x , vue-router 2.x , vuex 2.x
+[中文文档](https://github.com/JooZh/vue-app-effect/blob/master/README_CN.md)
 
-库只是一个核心处理文件，页面结构和配置还需要参考 examples 文件夹中的结果进行搭建
+## Premise
+Need vue 2.x , vue-router 2.x , vuex 2.x
 
-注意：每个路由下的组件根节点都需要采用绝对定位的方式，不采用的话切换会有一定问题。
+The library is only a core file, and the page structure and configuration need to be built against the results in the examples folder
 
-推荐：每个路由页面采用 [better-scroll](https://github.com/ustbhuangyi/better-scroll) 滚动插件来处理页面的滚动。可以不用自行处理路由切换后滚动条位置的问题。
+**Note**: the component root node under each routing needs to be positioned in an absolute manner, and switching without this will be problematic.
 
-也可以使用 `-webkit-overflow-scrolling:touch` 对固定容器进行溢出滚动的方式，使用这个需要自行处理滚动条位置问题，可以参考 demo示例
+**Recommendation**: each routing page takes [better-scroll](https://github.com/ustbhuangyi/better-scroll) the scroll plug-in handles the scrolling of the page. You don't have to deal with the scroll bar location after routing switching.
 
-## 在线演示
+You can use it `-webkit-overflow-scrolling:touch` see the demo example for a way to do overflow scrolling on a stationary container, which requires you to handle the scroll bar location on your own
 
-[Demo演示示例](https://joozh.github.io/vue-app-effect/)
+## Demo
 
-[完整音乐App示例](https://joozh.cn/music/)
+[Simple Demo](https://joozh.github.io/vue-app-effect/)
 
-## 安装使用
+[Full Music App Demo](https://joozh.cn/music/)
+
+## Install
 
 ```bash
 $ npm install vue-app-effect -S
 ```
 
-### 参数配置 options
+### Options
 
 ```js
 import Vue from 'vue'
 import router from './router' 
 import store from './store' 
 import VnodeCache from 'vue-app-effect'
-// 参数配置
+// Parameter configuration
 Vue.use(VnodeCache, {
-  router, // 必须
-  store,  // 必须
-  tabbar: ['/bar1', '/bar2', '/bar3', '/bar4'], // 必须：
-  common: '/common_route'
+  router, // necessary
+  store,  // necessary
+  tabbar: ['/bar1', '/bar2', '/bar3', '/bar4'], // necessary
+  common: '/common_route' // optional
 })
 ```
-参数 必须：[ tabbar ] 导航菜单的路由名称建议带 / 。
+options necessary：[ tabbar ] The route name of the navigation menu advice with / .
 
-参数 可选：[ common ] 可以添加一个公共路由，这个路由可以在任何地方都能打开。
+options optional：[ common ] you can add a public route that can be opened anywhere.
 
-### 监听事件 event
-实例化 `vue-app-effect` 使用 `this.$direction.on()` 进行事件监听
+### Event
+Instantiation `vue-app-effect` use `this.$direction.on()` event monitoring
 
 ```js
 created () {
-  // 监听前进事件
+  // listen forward
   this.$direction.on('forward', (direction) => {
-   console.log(direction)  // 空 或者 forward
+   console.log(direction)  // undefined or forward
   })
-  // 监听返回事件
+  // listen reverse
   this.$direction.on('reverse', (direction) => {
-    console.log(direction)  // 空 或者 reverse
+    console.log(direction)  // undefined or reverse
   })
 }
 ```
-### 数据缓存
+### `<node-cache>`
 
-实例化 `vue-app-effect` 之后可以使用 `<vnode-cache></vnode-cache>` 进行非导航菜单缓存管理，类似于 `<keep-alive>`
+Instantiation `vue-app-effect` and then you can use `<vnode-cache></vnode-cache>` non-navigational menu cache management，similar to the `<keep-alive>`
 
 ```vue
 <template>
@@ -74,7 +76,7 @@ created () {
   </div>
 </template>
 ```
-在 tabbar 路由的子路由的容器下使用 `<keep-alive>` 进行导航页面的路由缓存。
+Used under the container for subpaths of tabbar routing `<keep-alive>` cache for navigation pages.
 
 ```vue
 <template>
@@ -86,41 +88,41 @@ created () {
 </template>
 ```
 
-具体配置参考 [示例文件](https://github.com/JooZh/vue-app-effect/tree/master/examples)
+Specific configuration reference [Sample files](https://github.com/JooZh/vue-app-effect/tree/master/examples)
 
-## 动态路由实现多组件独立复用
+## Dynamic routing realizes multicomponent independent reuse
 
-在有些情况下需要不同路由打开同一个组件，而且在同一个组件中打开自己，这种情况下可以采用动态注册路由的方式
+In cases where you need different routes to open the same component and open yourself in the same component, you can dynamically register the routing
 
-路由部分
+router.js
 
 ```js
 import Router from 'vue-router'
-// 需要被继承的组件
+// Components that need to be inherited
 import Detail from '@/components/Detail/index'
-// 挂载到原型
+// Mount to prototype
 Router.prototype.extends = {
   Detail
 }
 ```
-组件中调用
+with methods
 
 ```js
 goDetail (index, name) {
-  // 创建一个新路由
+  // new router
   let newPath = `/movie/${index}`
   let newRoute = [{
     path: newPath,
     name: newPath,
     component: {extends: this.$router.extends.Detail}
   }]
-  // 判断路由是否存在 不存在 添加一个新路由
+  // To determine if a routing exists or does not exist add a new routing
   let find = this.$router.options.routes.findIndex(item => item.path === newPath)
   if (find === -1) {
     this.$router.options.routes.push(newRoute[0])
     this.$router.addRoutes(newRoute)
   }
-  // 存在直接跳转到路由
+  // There is a direct jump to routing
   this.$router.push({
     name: newPath,
     params: { id: index, name: name }
