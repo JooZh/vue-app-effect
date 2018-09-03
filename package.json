@@ -25,10 +25,7 @@
     "src",
     "examples"
   ],
-  "author": {
-    "name": "joozh",
-    "email": "joozhcn@gmail.com"
-  },
+  "author": "joozh <joozhcn@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/JooZh/vue-app-effect/issues"
@@ -115,5 +112,9 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  }
 }
