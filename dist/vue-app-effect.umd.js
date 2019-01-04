@@ -1,5 +1,5 @@
 /**
-* vue-app-effect v1.0.0
+* vue-app-effect v1.0.1
 * https://github.com/JooZh/vue-app-effect
 * Released under the MIT License.
 */
@@ -72,7 +72,7 @@ var VnodeCache = (function (bus, tabbar) {
       reverse: function reverse() {
         var _this3 = this;
 
-        var path = this.paths.pop();
+        var beforePath = this.paths.pop();
         var routes = this.$router.options.routes;
 
         var findTo = this.tabBar.findIndex(function (item) {
@@ -80,19 +80,20 @@ var VnodeCache = (function (bus, tabbar) {
         });
 
         var findRouterIndex = routes.findIndex(function (item) {
-          return item.path === path;
+          return item.path === beforePath;
         });
+
         if (findTo === -1 && findRouterIndex >= this.routerLen) {
           this.$router.options.routes.pop();
 
-          delete window.sessionStorage[path];
+          delete window.sessionStorage[beforePath];
           window.sessionStorage.count -= 1;
         }
 
-        var key = findTo === -1 ? this.$route.fullPath : '/tab-bar';
+        var key = findTo === -1 ? this.$route.fullPath : '';
         if (this.cache[key]) {
-          this.cache[path].componentInstance.$destroy();
-          delete this.cache[path];
+          this.cache[beforePath].componentInstance.$destroy();
+          delete this.cache[beforePath];
         }
       }
     },
