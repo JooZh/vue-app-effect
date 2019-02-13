@@ -5,7 +5,6 @@ import App from './App'
 import FastClick from 'fastclick'
 
 import router from './router'
-import store from './store/index'
 
 import '@/assets/css/reset.css'
 import '@/assets/css/vux.css'
@@ -18,7 +17,6 @@ FastClick.attach(document.body)
 
 Vue.use(VnodeCache, {
   router,
-  store,
   tabbar: ['/movie', '/rank', '/song', '/singer'],
   common: '/player'
 })

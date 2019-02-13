@@ -4,7 +4,7 @@ The front-end design scheme is designed to simulate the switching effect and cac
 [中文文档](https://github.com/JooZh/vue-app-effect/blob/master/README_CN.md)
 
 ## Premise
-Need vue 2.x , vue-router 2.x , vuex 2.x
+Need vue 2.x , vue-router 2.x 
 
 The library is only a core file, and the page structure and configuration need to be built against the results in the examples folder
 
@@ -31,12 +31,10 @@ $ npm install vue-app-effect -S
 ```js
 import Vue from 'vue'
 import router from './router' 
-import store from './store' 
 import VnodeCache from 'vue-app-effect'
 // Parameter configuration
 Vue.use(VnodeCache, {
   router, // necessary
-  store,  // necessary
   tabbar: ['/bar1', '/bar2', '/bar3', '/bar4'], // necessary
   common: '/common_route' // optional
 })
@@ -52,12 +50,13 @@ Instantiation `vue-app-effect` use `this.$direction.on()` event monitoring
 created () {
   // listen forward
   this.$direction.on('forward', (direction) => {
-   console.log(direction)  // undefined or forward
+   console.log(direction)  //{type:'forward',isTab:false}
   })
   // listen reverse
   this.$direction.on('reverse', (direction) => {
-    console.log(direction)  // undefined or reverse
+    console.log(direction)  // {type:'reverse',isTab:false}
   })
+  // type value are 'forward', 'reverse', ''
 }
 ```
 ### `<vnode-cache>`
@@ -108,25 +107,42 @@ Router.prototype.extends = {
 with methods
 
 ```js
-goDetail (index, name) {
-  // new router
-  let newPath = `/movie/${index}`
-  let newRoute = [{
-    path: newPath,
-    name: newPath,
-    component: {extends: this.$router.extends.Detail}
-  }]
-  // To determine if a routing exists or does not exist add a new routing
-  let find = this.$router.options.routes.findIndex(item => item.path === newPath)
-  if (find === -1) {
-    this.$router.options.routes.push(newRoute[0])
-    this.$router.addRoutes(newRoute)
+methods:{
+  goDetail (index, name) {
+    // new router
+    let newPath = `/movie/${index}`
+    let newRoute = [{
+      path: newPath,
+      name: newPath,
+      component: {extends: this.$router.extends.Detail}
+    }]
+    // To determine if a routing exists or does not exist add a new routing
+    let find = this.$router.options.routes.findIndex(item => item.path === newPath)
+    if (find === -1) {
+      this.$router.options.routes.push(newRoute[0])
+      this.$router.addRoutes(newRoute)
+    }
+    // There is a direct jump to routing
+    this.$router.replace({
+      name: newPath,
+      params: { id: index, name: name }
+    })
   }
-  // There is a direct jump to routing
-  this.$router.push({
-    name: newPath,
-    params: { id: index, name: name }
-  })
+}
+
+```
+The back button use a special method
+
+```js
+methods: {
+  back () {
+    window.NavStorage.paths.pop()
+    let newNavStorage = window.NavStorage.paths.concat([])
+    let path = newNavStorage.pop()
+    this.$router.replace({
+      name: path
+    })
+  }
 }
 
 ```

@@ -68,9 +68,7 @@ export default {
         component: {extends: this.$router.extends.SingerDetail}
       }]
       // 判断路由是否存在
-      let find = this.$router.options.routes.findIndex(item => {
-        return item.path === newPath
-      })
+      let find = this.$router.options.routes.findIndex(item => item.path === newPath)
       // 不存在 添加一个新路由
       if (find === -1) {
         this.$router.options.routes.push(newRoute[0])

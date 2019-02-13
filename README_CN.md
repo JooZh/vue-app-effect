@@ -2,7 +2,7 @@
 实现模拟原生app页面切换效果和缓存效果的前端设计方案, 行为上模拟了app的操作模式，前进刷新，后退缓存，保存数据和页面状态。并且可以始终保存tab菜单页面的内容不会被路由切换清除。
 
 ## 使用前提
-需要 vue 2.x , vue-router 2.x , vuex 2.x
+需要 vue 2.x , vue-router 2.x 
 
 库只是一个核心处理文件，页面结构和配置还需要参考 examples 文件夹中的结果进行搭建
 
@@ -10,7 +10,7 @@
 
 推荐：每个路由页面采用 [better-scroll](https://github.com/ustbhuangyi/better-scroll) 滚动插件来处理页面的滚动。可以不用自行处理路由切换后滚动条位置的问题。
 
-也可以使用 `-webkit-overflow-scrolling:touch` 对固定容器进行溢出滚动的方式，使用这个需要自行处理滚动条位置问题，可以参考 demo示例
+也可以使用 `-webkit-overflow-scrolling:touch` 对固定容器进行溢出滚动的方式，使用这个需要自行处理滚动条位置问题，
 
 ## 在线演示
 
@@ -29,12 +29,10 @@ $ npm install vue-app-effect -S
 ```js
 import Vue from 'vue'
 import router from './router' 
-import store from './store' 
 import VnodeCache from 'vue-app-effect'
 // 参数配置
 Vue.use(VnodeCache, {
-  router, // 必须
-  store,  // 必须
+  router,  // 必须
   tabbar: ['/bar1', '/bar2', '/bar3', '/bar4'], // 必须：
   common: '/common_route'
 })
@@ -50,12 +48,13 @@ Vue.use(VnodeCache, {
 created () {
   // 监听前进事件
   this.$direction.on('forward', (direction) => {
-   console.log(direction)  // 空 或者 forward
+   console.log(direction)  // {type:'forward',isTab:false}
   })
   // 监听返回事件
   this.$direction.on('reverse', (direction) => {
-    console.log(direction)  // 空 或者 reverse
+    console.log(direction)  // {type:'reverse',isTab:false}
   })
+  // type 的值为 'forward' 'reverse' ''
 }
 ```
 ### 数据缓存
@@ -106,25 +105,43 @@ Router.prototype.extends = {
 组件中调用
 
 ```js
-goDetail (index, name) {
-  // 创建一个新路由
-  let newPath = `/movie/${index}`
-  let newRoute = [{
-    path: newPath,
-    name: newPath,
-    component: {extends: this.$router.extends.Detail}
-  }]
-  // 判断路由是否存在 不存在 添加一个新路由
-  let find = this.$router.options.routes.findIndex(item => item.path === newPath)
-  if (find === -1) {
-    this.$router.options.routes.push(newRoute[0])
-    this.$router.addRoutes(newRoute)
+methods:{
+  goDetail (index, name) {
+    // 创建一个新路由
+    let newPath = `/movie/${index}`
+    let newRoute = [{
+      path: newPath,
+      name: newPath,
+      component: {extends: this.$router.extends.Detail}
+    }]
+    // 判断路由是否存在 不存在 添加一个新路由
+    let find = this.$router.options.routes.findIndex(item => item.path === newPath)
+    if (find === -1) {
+      this.$router.options.routes.push(newRoute[0])
+      this.$router.addRoutes(newRoute)
+    }
+    // 存在直接跳转到路由
+    this.$router.replace({
+      name: newPath,
+      params: { id: index, name: name }
+    })
   }
-  // 存在直接跳转到路由
-  this.$router.push({
-    name: newPath,
-    params: { id: index, name: name }
-  })
 }
+
+```
+
+返回按钮中使用特殊方式
+
+```js
+methods: {
+    back () {
+      window.NavStorage.paths.pop()
+      let newNavStorage = window.NavStorage.paths.concat([])
+      let path = newNavStorage.pop()
+      this.$router.replace({
+        name: path
+      })
+    }
+  }
 
 ```
