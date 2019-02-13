@@ -92,7 +92,6 @@ export default {
         }
       // 是进入 tabbar 路由 ---------------------------------------
       } else {
-        console.log('tab')
         // 判断是否是ios左滑返回
         if (!isPush && (Date.now() - endTime) < 377) {
           // 是不是导航页面之间的切换

@@ -1,25 +1,25 @@
 <template>
   <div id="tab-bar">
     <div class="container border-half-top">
-      <router-link class="bar" to="/movie">
+      <router-link class="bar" :to="'/movie'" replace>
         <div class="button">
           <div class="icon"><i class="fa fa-video-camera"></i></div>
           <div class="text">视频</div>
         </div>
       </router-link>
-      <router-link class="bar" to="/singer">
+      <router-link class="bar" :to="'/singer'" replace>
         <div class="button">
           <div class="icon"><i class="fa fa-camera-retro"></i></div>
           <div class="text">歌手</div>
         </div>
       </router-link>
-      <router-link class="bar" to="/rank">
+      <router-link class="bar" :to="'/rank'" replace>
         <div class="button">
           <div class="icon"><i class="fa fa-camera-retro"></i></div>
           <div class="text">排行</div>
         </div>
       </router-link>
-      <router-link class="bar" to="/song">
+      <router-link class="bar" :to="'/song'" replace>
         <div class="button">
           <div class="icon"><i class="fa fa-camera-retro"></i></div>
           <div class="text">歌单</div>
