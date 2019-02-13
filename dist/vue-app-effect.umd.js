@@ -134,6 +134,7 @@ var index = {
       console.error('vue-app-effect need options: router, tabbar and store');
       return;
     }
+
     var bus = new Vue();
 
     store.registerModule('NAV_DIRECTION', {
@@ -177,14 +178,19 @@ var index = {
 
     router.beforeEach(function (to, from, next) {
       var toIndex = Number(window.sessionStorage.getItem(to.path));
+
       var fromIndex = Number(window.sessionStorage.getItem(from.path));
 
-      var find = tabbar.findIndex(function (item) {
+      var toIsTabBar = tabbar.findIndex(function (item) {
         return item === to.path;
       });
 
-      if (find === -1) {
-        if (toIndex) {
+      var formIsTabBar = tabbar.findIndex(function (item) {
+        return item === from.path;
+      });
+
+      if (toIsTabBar === -1) {
+        if (toIndex > 0) {
           if (toIndex > fromIndex) {
             bus.$emit('forward', { type: 'forward', isTab: false });
             store.commit('NAV_DIRECTION_UPDATE', { direction: 'forward' });
@@ -213,13 +219,18 @@ var index = {
         }
       } else {
         if (!isPush && Date.now() - endTime < 377) {
-          bus.$emit('reverse', { type: '', isTab: true });
-          store.commit('NAV_DIRECTION_UPDATE', { direction: '' });
+          if (formIsTabBar === -1) {
+            bus.$emit('reverse', { type: '', isTab: true });
+            store.commit('NAV_DIRECTION_UPDATE', { direction: '' });
+            next();
+          } else {
+            return;
+          }
         } else {
           bus.$emit('reverse', { type: 'reverse', isTab: true });
           store.commit('NAV_DIRECTION_UPDATE', { direction: 'reverse' });
+          next();
         }
-        next();
       }
     });
 
