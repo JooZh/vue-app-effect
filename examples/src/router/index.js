@@ -12,13 +12,15 @@ import Song from '@/ComponentsBarPages/Song/index'
 
 // 需要被继承的组件
 import MovieDetail from '@/ComponentsDetails/MovieDetail/index'
+import SingerDetail from '@/ComponentsDetails/SingerDetail/index'
 
 // 公共打开的页面
 import Player from '@/ComponentsCommon/Player/index'
 
 // 每个动态注册的路由重复使用的组件
 Router.prototype.extends = {
-  MovieDetail
+  MovieDetail,
+  SingerDetail
 }
 
 Vue.use(Router)

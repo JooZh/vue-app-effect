@@ -24,7 +24,7 @@ var VnodeCache = (function (bus, tabbar) {
         to: {},
         from: {},
         tabBar: tabbar,
-        direction: '',
+
         paths: []
       };
     },
@@ -53,12 +53,7 @@ var VnodeCache = (function (bus, tabbar) {
       this.to = this.$route;
 
       bus.$on('reverse', function () {
-        _this2.direction = 'reverse';
         _this2.reverse();
-      });
-
-      bus.$on('forward', function () {
-        _this2.direction = 'forward';
       });
     },
     destroyed: function destroyed() {
@@ -73,6 +68,7 @@ var VnodeCache = (function (bus, tabbar) {
         var _this3 = this;
 
         var beforePath = this.paths.pop();
+
         var routes = this.$router.options.routes;
 
         var isTabBar = this.tabBar.findIndex(function (item) {
@@ -84,8 +80,8 @@ var VnodeCache = (function (bus, tabbar) {
         });
 
         if (isTabBar === -1 && routerIndex >= this.routerLen) {
-          delete window.sessionStorage[beforePath];
-          window.sessionStorage.count -= 1;
+          delete window.NavStorage[beforePath];
+          window.NavStorage.count -= 1;
         }
 
         var key = isTabBar === -1 ? this.$route.fullPath : '';
@@ -125,37 +121,26 @@ var index = {
   install: function install(Vue) {
     var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
         router = _ref.router,
-        store = _ref.store,
         tabbar = _ref.tabbar,
         _ref$common = _ref.common,
         common = _ref$common === undefined ? '' : _ref$common;
 
-    if (!router || !store || !tabbar) {
-      console.error('vue-app-effect need options: router, tabbar and store');
+    if (!router || !tabbar) {
+      console.error('vue-app-effect need options: router, tabbar');
       return;
     }
-
-    var bus = new Vue();
-
-    store.registerModule('NAV_DIRECTION', {
-      state: {
-        direction: 'forward'
-      },
-      mutations: {
-        'NAV_DIRECTION_UPDATE': function NAV_DIRECTION_UPDATE(state, payload) {
-          state.direction = payload.direction;
-        }
-      }
-    });
 
     window.addEventListener('load', function () {
       router.replace({ path: '/' });
     });
 
-    window.sessionStorage.clear();
-    window.sessionStorage.setItem('count', 0);
-    window.sessionStorage.setItem('/', 0);
-    common && window.sessionStorage.setItem(common, 999999);
+    window.NavStorage = {
+      'count': 0,
+      'paths': []
+    };
+    if (common) {
+      window.NavStorage[common] = 9999999;
+    }
 
     var isPush = false;
     var endTime = Date.now();
@@ -176,10 +161,16 @@ var index = {
       };
     });
 
+    var bus = new Vue();
     router.beforeEach(function (to, from, next) {
-      var toIndex = Number(window.sessionStorage.getItem(to.path));
+      if (/\/http/.test(to.path)) {
+        window.location.href = to.path;
+        return;
+      }
 
-      var fromIndex = Number(window.sessionStorage.getItem(from.path));
+      var toIndex = Number(window.NavStorage[to.path]);
+      var fromIndex = Number(window.NavStorage[from.path]);
+      fromIndex = fromIndex ? fromIndex : 0;
 
       var toIsTabBar = tabbar.findIndex(function (item) {
         return item === to.path;
@@ -193,45 +184,32 @@ var index = {
         if (toIndex > 0) {
           if (toIndex > fromIndex) {
             bus.$emit('forward', { type: 'forward', isTab: false });
-            store.commit('NAV_DIRECTION_UPDATE', { direction: 'forward' });
+            window.NavStorage.paths.push(to.path);
           } else {
             if (!isPush && Date.now() - endTime < 377) {
               bus.$emit('reverse', { type: '', isTab: false });
-              store.commit('NAV_DIRECTION_UPDATE', { direction: '' });
             } else {
               bus.$emit('reverse', { type: 'reverse', isTab: false });
-              store.commit('NAV_DIRECTION_UPDATE', { direction: 'reverse' });
             }
           }
         } else {
-          var count = ++window.sessionStorage.count;
-          window.sessionStorage.setItem('count', count);
-          window.sessionStorage.setItem(to.path, count);
+          var count = ++window.NavStorage.count;
+          window.NavStorage.count = count;
+          window.NavStorage[to.path] = count;
           bus.$emit('forward', { type: 'forward', isTab: false });
-          store.commit('NAV_DIRECTION_UPDATE', { direction: 'forward' });
-        }
-
-        if (/\/http/.test(to.path)) {
-          var url = to.path.split('http')[1];
-          window.location.href = 'http' + url;
-        } else {
-          next();
+          window.NavStorage.paths.push(to.path);
         }
       } else {
+        window.NavStorage.paths.pop();
+
         if (!isPush && Date.now() - endTime < 377) {
-          if (formIsTabBar === -1) {
-            bus.$emit('reverse', { type: '', isTab: true });
-            store.commit('NAV_DIRECTION_UPDATE', { direction: '' });
-            next();
-          } else {
-            return;
-          }
+          bus.$emit('reverse', { type: '', isTab: true });
         } else {
           bus.$emit('reverse', { type: 'reverse', isTab: true });
-          store.commit('NAV_DIRECTION_UPDATE', { direction: 'reverse' });
-          next();
         }
+        window.NavStorage.paths.push(to.path);
       }
+      next();
     });
 
     router.afterEach(function () {

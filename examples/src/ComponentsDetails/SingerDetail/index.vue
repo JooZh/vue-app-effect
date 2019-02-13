@@ -1,36 +1,36 @@
 <template>
   <div>
     <div class="sub-view">
-      <Header :title="'视频详情'" :show="true" :bg="true" :border="true"></Header>
+      <Header :title="'歌手详情'" :show="true" :bg="true" :border="true"></Header>
       <div class="container">
         <div ref="bd" @scroll="scroll" class="bd">
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">
-            <p @click='goDetailMv(id+1,`详情页${id+1}`)'>点击打开MV详情页{{id+1}}</p>
-          </div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
           <div class="info">
             <p @click='goDetailSinger(id+1,`详情页${id+1}`)'>点击打开Singer详情页{{id+1}}</p>
           </div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
+          <div class="info">
+            <p @click='goDetailMv(id+1,`详情页${id+1}`)'>点击打开MV详情页{{id+1}}</p>
+          </div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
+          <div class="info">当前是singer {{name}}</div>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
 <script>
 import Header from '@/ComponentsLayout/Header/index'
 export default {
-  name: 'mv-detail',
+  name: 'singer-detail',
   components: {
     Header
   },
@@ -59,13 +59,13 @@ export default {
     this.name = this.$route.params.name
   },
   methods: {
-    goDetailMv (index, name) {
+    goDetailSinger (index, name) {
       // 创建一个新路由
-      let newPath = `/movie/${index}`
+      let newPath = `/singer/${index}`
       let newRoute = [{
         path: newPath,
         name: newPath,
-        component: {extends: this.$router.extends.MovieDetail}
+        component: {extends: this.$router.extends.SingerDetail}
       }]
       // 判断路由是否存在
       let find = this.$router.options.routes.findIndex(item => {
@@ -82,13 +82,13 @@ export default {
         params: { id: index, name: name }
       })
     },
-    goDetailSinger (index, name) {
+    goDetailMv (index, name) {
       // 创建一个新路由
-      let newPath = `/singer/${index}`
+      let newPath = `/movie/${index}`
       let newRoute = [{
         path: newPath,
         name: newPath,
-        component: {extends: this.$router.extends.SingerDetail}
+        component: {extends: this.$router.extends.MovieDetail}
       }]
       // 判断路由是否存在
       let find = this.$router.options.routes.findIndex(item => {

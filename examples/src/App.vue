@@ -5,7 +5,7 @@
         <router-view class="router-view"></router-view>
       </vnode-cache>
     </transition>
-    <TabBar v-if="isTab"></TabBar>
+    <TabBar v-show="isTab"></TabBar>
   </div>
 </template>
 

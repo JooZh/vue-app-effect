@@ -9,7 +9,7 @@ export default (bus, tabbar) => {
       to: {},
       from: {},
       tabBar: tabbar,
-      direction: '',
+      // direction: '',
       paths: []
     }),
     computed: {},
@@ -34,13 +34,13 @@ export default (bus, tabbar) => {
       this.to = this.$route
       // 监听返回事件
       bus.$on('reverse', () => {
-        this.direction = 'reverse'
+        // this.direction = 'reverse'
         this.reverse()
       })
       // 监听前进事件
-      bus.$on('forward', () => {
-        this.direction = 'forward'
-      })
+      // bus.$on('forward', () => {
+      //   this.direction = 'forward'
+      // })
     },
     destroyed () {
       for (const key in this.cache) {
@@ -51,6 +51,7 @@ export default (bus, tabbar) => {
     methods: {
       reverse () {
         let beforePath = this.paths.pop()
+        
         let routes = this.$router.options.routes
         // 查询是不是导航路由
         let isTabBar = this.tabBar.findIndex(item => item === this.$route.fullPath)
@@ -58,9 +59,9 @@ export default (bus, tabbar) => {
         let routerIndex = routes.findIndex(item => item.path === beforePath)
         // 当不是导航路由，并且不是默认配置路由
         if (isTabBar === -1 && routerIndex >= this.routerLen) {
-          // 清除对应历史记录
-          delete window.sessionStorage[beforePath]
-          window.sessionStorage.count -= 1
+          // 清除对应历史记录         
+          delete  window.NavStorage[beforePath]
+          window.NavStorage.count -= 1
         }
         // 当不是导航的时候 删除上一个缓存
         let key = isTabBar === -1 ? this.$route.fullPath : ''

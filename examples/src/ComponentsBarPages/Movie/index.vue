@@ -8,7 +8,7 @@
             <div class='detail' @click='goDetail(index+1,`详情页${index+1}`)'>
               <img class='img' :src="defaultImg">
               <div class="title-box">
-                <div class='title'>vue-app-effect {{index+1}}</div>
+                <div class='title'>vue-app-effect MV {{index+1}}</div>
               </div>
               <div class='date'>播放: {{index+1}}.99 万</div>
             </div>

@@ -40,7 +40,12 @@ export default {
   },
   methods: {
     back () {
-      this.$router.go(-1)
+      window.NavStorage.paths.pop()
+      let newNavStorage = window.NavStorage.paths.concat([])
+      let path = newNavStorage.pop()
+      this.$router.replace({
+        name: path
+      })
     },
     changePlayer () {
       this.$router.push({

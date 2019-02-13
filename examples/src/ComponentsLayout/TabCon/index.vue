@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'tab'
+  name: 'tabCon'
 }
 </script>
 
