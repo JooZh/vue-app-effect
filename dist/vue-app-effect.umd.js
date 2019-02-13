@@ -186,14 +186,14 @@ var index = {
       if (find === -1) {
         if (toIndex) {
           if (toIndex > fromIndex) {
-            bus.$emit('forward', 'forward');
+            bus.$emit('forward', { type: 'forward', isTab: false });
             store.commit('NAV_DIRECTION_UPDATE', { direction: 'forward' });
           } else {
             if (!isPush && Date.now() - endTime < 377) {
-              bus.$emit('reverse', '');
+              bus.$emit('reverse', { type: '', isTab: false });
               store.commit('NAV_DIRECTION_UPDATE', { direction: '' });
             } else {
-              bus.$emit('reverse', 'reverse');
+              bus.$emit('reverse', { type: 'reverse', isTab: false });
               store.commit('NAV_DIRECTION_UPDATE', { direction: 'reverse' });
             }
           }
@@ -201,7 +201,7 @@ var index = {
           var count = ++window.sessionStorage.count;
           window.sessionStorage.setItem('count', count);
           window.sessionStorage.setItem(to.path, count);
-          bus.$emit('forward', 'forward');
+          bus.$emit('forward', { type: 'forward', isTab: false });
           store.commit('NAV_DIRECTION_UPDATE', { direction: 'forward' });
         }
 
@@ -213,10 +213,10 @@ var index = {
         }
       } else {
         if (!isPush && Date.now() - endTime < 377) {
-          bus.$emit('reverse', '');
+          bus.$emit('reverse', { type: '', isTab: true });
           store.commit('NAV_DIRECTION_UPDATE', { direction: '' });
         } else {
-          bus.$emit('reverse', 'reverse');
+          bus.$emit('reverse', { type: 'reverse', isTab: true });
           store.commit('NAV_DIRECTION_UPDATE', { direction: 'reverse' });
         }
         next();
@@ -228,6 +228,7 @@ var index = {
     });
 
     Vue.component('vnode-cache', VnodeCache(bus, tabbar));
+
     Vue.direction = Vue.prototype.$direction = {
       on: function on(event, callback) {
         bus.$on(event, callback);

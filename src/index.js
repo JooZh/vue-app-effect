@@ -51,24 +51,15 @@ export default {
         if (toIndex) {
           // 不是返回
           if ((toIndex > fromIndex)) {
-            bus.$emit('forward', {
-              type:'forward',
-              isTab:false
-            })
+            bus.$emit('forward', {type:'forward',isTab:false})
             store.commit('NAV_DIRECTION_UPDATE', {direction: 'forward'})
           } else {
             // 判断是否是ios左滑返回
             if (!isPush && (Date.now() - endTime) < 377) {
-              bus.$emit('reverse', {
-                type:'',
-                isTab:false
-              })
+              bus.$emit('reverse', { type:'', isTab:false })
               store.commit('NAV_DIRECTION_UPDATE', {direction: ''})
             } else {
-              bus.$emit('reverse', {
-                type:'reverse',
-                isTab:false
-              })
+              bus.$emit('reverse', { type:'reverse', isTab:false })
               store.commit('NAV_DIRECTION_UPDATE', { direction: 'reverse' })
             }
           }
@@ -77,10 +68,7 @@ export default {
           let count = ++window.sessionStorage.count
           window.sessionStorage.setItem('count', count)
           window.sessionStorage.setItem(to.path, count)
-          bus.$emit('forward', {
-            type:'forward',
-            isTab:false
-          })
+          bus.$emit('forward', { type:'forward', isTab:false })
           store.commit('NAV_DIRECTION_UPDATE', {direction: 'forward'})
         }
         // 是外链
@@ -94,16 +82,10 @@ export default {
       } else {
         // 判断是否是ios左滑返回
         if (!isPush && (Date.now() - endTime) < 377) {
-          bus.$emit('reverse', {
-            type:'',
-            isTab:true
-          })
+          bus.$emit('reverse', { type:'', isTab:true })
           store.commit('NAV_DIRECTION_UPDATE', {direction: ''})
         } else {
-          bus.$emit('reverse', {
-            type:'reverse',
-            isTab:true
-          })
+          bus.$emit('reverse', { type:'reverse', isTab:true })
           store.commit('NAV_DIRECTION_UPDATE', { direction: 'reverse' })
         }
         next()
