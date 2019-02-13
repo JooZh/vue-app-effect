@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+// tabBar 容器
 import TabCon from '@/ComponentsLayout/TabCon/index'
 
+// tabBar 页面
 import Movie from '@/ComponentsBarPages/Movie/index'
 import Rank from '@/ComponentsBarPages/Rank/index'
 import Singer from '@/ComponentsBarPages/Singer/index'
@@ -10,16 +12,16 @@ import Song from '@/ComponentsBarPages/Song/index'
 
 // 需要被继承的组件
 import MovieDetail from '@/ComponentsDetails/MovieDetail/index'
-// import RankDetail from '@/ComponentsDetails/RankDetail/index'
-// import SongDetail from '@/ComponentsDetails/SongDetail/index'
-// import SingerDetail from '@/ComponentsDetails/SingerDetail/index'
 
-Vue.use(Router)
+// 公共打开的页面
+import Player from '@/ComponentsCommon/Player/index'
 
 // 每个动态注册的路由重复使用的组件
 Router.prototype.extends = {
   MovieDetail
 }
+
+Vue.use(Router)
 
 export default new Router({
   routes: [{
@@ -43,5 +45,9 @@ export default new Router({
       name: '/song',
       component: Song
     }]
+  }, {
+    path: '/player',
+    name: '/player',
+    component: Player
   }]
 })

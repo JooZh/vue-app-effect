@@ -53,20 +53,17 @@ export default (bus, tabbar) => {
         let beforePath = this.paths.pop()
         let routes = this.$router.options.routes
         // 查询是不是导航路由
-        let findTo = this.tabBar.findIndex(item => item === this.$route.fullPath)
+        let isTabBar = this.tabBar.findIndex(item => item === this.$route.fullPath)
         // 查询当前路由在路由列表中的位置
-        let findRouterIndex = routes.findIndex(item => item.path === beforePath)
+        let routerIndex = routes.findIndex(item => item.path === beforePath)
         // 当不是导航路由，并且不是默认配置路由
-        if (findTo === -1 && findRouterIndex >= this.routerLen) {
-          // 删除路由
-          this.$router.options.routes.pop()
-          // this.$router.addRoutes([])
+        if (isTabBar === -1 && routerIndex >= this.routerLen) {
           // 清除对应历史记录
           delete window.sessionStorage[beforePath]
           window.sessionStorage.count -= 1
         }
         // 当不是导航的时候 删除上一个缓存
-        let key = findTo === -1 ? this.$route.fullPath : ''
+        let key = isTabBar === -1 ? this.$route.fullPath : ''
         if (this.cache[key]) {
           this.cache[beforePath].componentInstance.$destroy()
           delete this.cache[beforePath]

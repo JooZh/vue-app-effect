@@ -4,12 +4,14 @@
       <div @click="back"><i v-if="show" class="fa fa-angle-left"></i></div>
     </div>
     <div class="title">{{title}}</div>
-    <div class="show-cd">
+    <div class="show-cd" @click="changePlayer">
+      <Music v-if="music"></Music>
     </div>
   </div>
 </template>
 
 <script>
+import Music from '@/ComponentsCommon/Music/index'
 export default {
   props: {
     title: {
@@ -27,11 +29,23 @@ export default {
     border: {
       type: Boolean,
       default: true
+    },
+    music: {
+      type: Boolean,
+      default: true
     }
+  },
+  components: {
+    Music
   },
   methods: {
     back () {
       this.$router.go(-1)
+    },
+    changePlayer () {
+      this.$router.push({
+        path: `/player`
+      })
     }
   }
 }

@@ -8,6 +8,7 @@ import router from './router'
 import store from './store/index'
 
 import '@/assets/css/reset.css'
+import '@/assets/css/vux.css'
 
 import VnodeCache from '../../src/index'
 
@@ -20,11 +21,6 @@ Vue.use(VnodeCache, {
   store,
   tabbar: ['/movie', '/rank', '/song', '/singer'],
   common: '/player'
-})
-
-// 监听页面主动刷新
-window.addEventListener('load', () => {
-  router.replace({path: '/'})
 })
 
 /* eslint-disable no-new */

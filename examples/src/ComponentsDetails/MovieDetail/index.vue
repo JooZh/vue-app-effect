@@ -1,19 +1,19 @@
 <template>
   <div>
     <div class="sub-view">
-      <Header :title="'视频详情'" :show="true" :bg="true" :border="true"></Header>
+      <Header :title="'详情'" :show="true" :bg="true" :border="true"></Header>
       <div class="container">
         <div class="bd">
           <div class="info">当前是 {{name}}</div>
+          <div class="info">当前是 {{name}}</div>
+          <div class="info">当前是 {{name}}</div>
+          <div class="info">当前是 {{name}}</div>
+          <div class="info">当前是 {{name}}</div>
+          <div class="info">当前是 {{name}}</div>
+          <div class="info">当前是 {{name}}</div>
           <div class="info">
-            <p v-if="id!=99" @click='goDetail(99,`详情页99`)'>点击打开详情页99</p>
+            <p @click='goDetail(id+1,`详情页${id+1}`)'>点击打开详情页{{id+1}}</p>
           </div>
-          <div class="info">当前是 {{name}}</div>
-          <div class="info">当前是 {{name}}</div>
-          <div class="info">当前是 {{name}}</div>
-          <div class="info">当前是 {{name}}</div>
-          <div class="info">当前是 {{name}}</div>
-          <div class="info">当前是 {{name}}</div>
           <div class="info">当前是 {{name}}</div>
           <div class="info">当前是 {{name}}</div>
           <div class="info">当前是 {{name}}</div>
@@ -61,20 +61,22 @@ export default {
         name: newPath,
         component: {extends: this.$router.extends.MovieDetail}
       }]
-      // 判断路由是否存在 不存在 添加一个新路由
-      let find = this.$router.options.routes.findIndex(item => item.path === newPath)
+      // 判断路由是否存在
+      let find = this.$router.options.routes.findIndex(item => {
+        return item.path === newPath
+      })
+      // 不存在 添加一个新路由
       if (find === -1) {
         this.$router.options.routes.push(newRoute[0])
         this.$router.addRoutes(newRoute)
       }
-      // 存在直接跳转到路由
+      // 然后跳转
       this.$router.push({
         name: newPath,
         params: { id: index, name: name }
       })
     }
   }
-
 }
 </script>
 

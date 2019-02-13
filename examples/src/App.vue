@@ -5,7 +5,7 @@
         <router-view class="router-view"></router-view>
       </vnode-cache>
     </transition>
-    <TabBar></TabBar>
+    <TabBar v-if="isTab"></TabBar>
   </div>
 </template>
 
@@ -19,17 +19,20 @@ export default {
   data () {
     return {
       transitionName: '',
-      direction: ''
+      direction: '',
+      isTab: true
     }
   },
   created () {
     this.$direction.on('forward', (direction) => {
       this.transitionName = 'vux-pop-in'
-      this.direction = direction
+      this.direction = direction.type
+      this.isTab = direction.isTab
     })
     this.$direction.on('reverse', (direction) => {
       this.transitionName = 'vux-pop-out'
-      this.direction = direction
+      this.direction = direction.type
+      this.isTab = direction.isTab
     })
   }
 }
@@ -57,33 +60,5 @@ export default {
       .bd
         overflow-y scroll
         -webkit-overflow-scrolling : touch
-// 效果代码来源 vux
-.vux-pop-out-enter-active,
-.vux-pop-out-leave-active,
-.vux-pop-in-enter-active,
-.vux-pop-in-leave-active {
-  will-change: transform;
-  transition: all 500ms cubic-bezier(0.075, 0.82, 0.165, 1)
-  bottom: 50px;
-  top: 0;
-  position: absolute;
-  backface-visibility: hidden;
-  perspective: 1000;
-}
-.vux-pop-out-enter {
-  opacity: 0;
-  transform: translate3d(-70%, 0, 0);
-}
-.vux-pop-out-leave-active {
-  opacity: 0;
-  transform: translate3d(70%, 0, 0);
-}
-.vux-pop-in-enter {
-  opacity: 0;
-  transform: translate3d(70%, 0, 0);
-}
-.vux-pop-in-leave-active {
-  opacity: 0;
-  transform: translate3d(-70%, 0, 0);
-}
+
 </style>

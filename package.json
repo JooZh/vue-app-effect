@@ -1,6 +1,6 @@
 {
   "name": "vue-app-effect",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A template that simulates app page switching and caching effects",
   "private": false,
   "scripts": {
@@ -39,7 +39,7 @@
   "dependencies": {},
   "devDependencies": {
     "axios": "^0.18.0",
-    "better-scroll": "^1.12.6",
+    "vue-scroller": "^2.2.4",
     "fastclick": "^1.0.6",
     "iview": "^3.0.0",
     "nprogress": "^0.2.0",
