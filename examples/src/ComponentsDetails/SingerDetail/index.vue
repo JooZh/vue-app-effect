@@ -77,7 +77,7 @@ export default {
         this.$router.addRoutes(newRoute)
       }
       // 然后跳转
-      this.$router.push({
+      this.$router.replace({
         name: newPath,
         params: { id: index, name: name }
       })
@@ -100,7 +100,7 @@ export default {
         this.$router.addRoutes(newRoute)
       }
       // 然后跳转
-      this.$router.push({
+      this.$router.replace({
         name: newPath,
         params: { id: index, name: name }
       })

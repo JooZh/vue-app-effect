@@ -48,7 +48,7 @@ export default {
       })
     },
     changePlayer () {
-      this.$router.push({
+      this.$router.replace({
         path: `/player`
       })
     }

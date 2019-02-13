@@ -51,7 +51,7 @@ export default {
         this.$router.addRoutes(newRoute)
       }
       // 存在直接跳转到路由
-      this.$router.push({
+      this.$router.replace({
         name: newPath,
         params: { id: index, name: name }
       })
