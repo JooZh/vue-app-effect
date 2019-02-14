@@ -64,7 +64,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../assets/css/common'
+@import '../../assets/css/mxin'
 .mvlist
   color:rgba(255,255,255,0.5)
   display flex

@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../assets/css/common';
+@import '../../assets/css/mxin';
 ul,li
   margin: 0;
   padding: 0;
@@ -50,13 +50,13 @@ ul,li
     &.start
       .m1
         animation: .8s .1s living linear infinite backwards normal;
-        -webkit-animation-delay: -1.1s;
+        animation-delay: -1.1s;
       .m2
         animation: .8s .3s living linear infinite backwards normal;
-        -webkit-animation-delay: -1.3s;
+        animation-delay: -1.3s;
       .m3
         animation: .8s .6s living linear infinite backwards normal;
-        -webkit-animation-delay: -1.6s;
+        animation-delay: -1.6s;
     &.stop
       position relative
       vertical-align bottom
@@ -72,14 +72,17 @@ ul,li
         height 13px
         position relative
         top 12px
-
-@-webkit-keyframes living
-  0%{-webkit-transform:scaleY(1);transform:scaleY(1);-webkit-transform-origin:0 25px;transform-origin:0 25px}
-  50%{-webkit-transform:scaleY(.3);transform:scaleY(.3);-webkit-transform-origin:0 25px;transform-origin:0 25px}
-  100%{-webkit-transform:scaleY(1);transform:scaleY(1);-webkit-transform-origin:0 25px;transform-origin:0 25px}
 @keyframes living
-  0%{-webkit-transform:scaleY(1);-ms-transform:scaleY(1);transform:scaleY(1);-webkit-transform-origin:0 25px;-ms-transform-origin:0 25px;transform-origin:0 25px}
-  50%{-webkit-transform:scaleY(.3);-ms-transform:scaleY(.3);transform:scaleY(.3);-webkit-transform-origin:0 25px;-ms-transform-origin:0 25px;transform-origin:0 25px}
-  100%{-webkit-transform:scaleY(1);-ms-transform:scaleY(1);transform:scaleY(1);-webkit-transform-origin:0 25px;-ms-transform-origin:0 25px;transform-origin:0 25px}
-
+  0%{
+    transform:scaleY(1);
+    transform-origin:0 25px
+  }
+  50%{
+    transform:scaleY(.3);
+    transform-origin:0 25px
+  }
+  100%{
+    transform:scaleY(1);
+    transform-origin:0 25px
+  }
 </style>

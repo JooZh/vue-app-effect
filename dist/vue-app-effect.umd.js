@@ -80,8 +80,8 @@ var VnodeCache = (function (bus, tabbar) {
         });
 
         if (isTabBar === -1 && routerIndex >= this.routerLen) {
-          delete window.NavStorage[beforePath];
-          window.NavStorage.count -= 1;
+          delete window.$VueAppEffect[beforePath];
+          window.$VueAppEffect.count -= 1;
         }
 
         var key = isTabBar === -1 ? this.$route.fullPath : '';
@@ -134,12 +134,23 @@ var index = {
       router.replace({ path: '/' });
     });
 
-    window.NavStorage = {
+    var CSS = '\n    .vue-app-effect-out-enter-active,\n    .vue-app-effect-out-leave-active,\n    .vue-app-effect-in-enter-active,\n    .vue-app-effect-in-leave-active {\n      will-change: transform;\n      transition: all 500ms cubic-bezier(0.075, 0.82, 0.165, 1) ;\n      bottom: 50px;\n      top: 0;\n      position: absolute;\n      backface-visibility: hidden;\n      perspective: 1000;\n    }\n    .vue-app-effect-out-enter {\n      opacity: 0;\n      transform: translate3d(-70%, 0, 0);\n    }\n    .vue-app-effect-out-leave-active {\n      opacity: 0 ;\n      transform: translate3d(70%, 0, 0);\n    }\n    .vue-app-effect-in-enter {\n      opacity: 0;\n      transform: translate3d(70%, 0, 0);\n    }\n    .vue-app-effect-in-leave-active {\n      opacity: 0;\n      transform: translate3d(-70%, 0, 0);\n    }';
+    var head = document.head || document.getElementsByTagName('head')[0];
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    if (style.styleSheet) {
+      style.styleSheet.cssText = CSS;
+    } else {
+      style.appendChild(document.createTextNode(CSS));
+    }
+    head.appendChild(style);
+
+    window.$VueAppEffect = {
       'count': 0,
       'paths': []
     };
     if (common) {
-      window.NavStorage[common] = 9999999;
+      window.$VueAppEffect[common] = 9999999;
     }
 
     var isPush = false;
@@ -168,8 +179,8 @@ var index = {
         return;
       }
 
-      var toIndex = Number(window.NavStorage[to.path]);
-      var fromIndex = Number(window.NavStorage[from.path]);
+      var toIndex = Number(window.$VueAppEffect[to.path]);
+      var fromIndex = Number(window.$VueAppEffect[from.path]);
       fromIndex = fromIndex ? fromIndex : 0;
 
       var toIsTabBar = tabbar.findIndex(function (item) {
@@ -183,31 +194,31 @@ var index = {
       if (toIsTabBar === -1) {
         if (toIndex > 0) {
           if (toIndex > fromIndex) {
-            bus.$emit('forward', { type: 'forward', isTab: false });
-            window.NavStorage.paths.push(to.path);
+            bus.$emit('forward', { type: 'forward', isTab: false, transitionName: 'vue-app-effect-in' });
+            window.$VueAppEffect.paths.push(to.path);
           } else {
             if (!isPush && Date.now() - endTime < 377) {
-              bus.$emit('reverse', { type: '', isTab: false });
+              bus.$emit('reverse', { type: '', isTab: false, transitionName: 'vue-app-effect-out' });
             } else {
-              bus.$emit('reverse', { type: 'reverse', isTab: false });
+              bus.$emit('reverse', { type: 'reverse', isTab: false, transitionName: 'vue-app-effect-out' });
             }
           }
         } else {
-          var count = ++window.NavStorage.count;
-          window.NavStorage.count = count;
-          window.NavStorage[to.path] = count;
-          bus.$emit('forward', { type: 'forward', isTab: false });
-          window.NavStorage.paths.push(to.path);
+          var count = ++window.$VueAppEffect.count;
+          window.$VueAppEffect.count = count;
+          window.$VueAppEffect[to.path] = count;
+          bus.$emit('forward', { type: 'forward', isTab: false, transitionName: 'vue-app-effect-in' });
+          window.$VueAppEffect.paths.push(to.path);
         }
       } else {
-        window.NavStorage.paths.pop();
+        window.$VueAppEffect.paths.pop();
 
         if (!isPush && Date.now() - endTime < 377) {
-          bus.$emit('reverse', { type: '', isTab: true });
+          bus.$emit('reverse', { type: '', isTab: true, transitionName: 'vue-app-effect-out' });
         } else {
-          bus.$emit('reverse', { type: 'reverse', isTab: true });
+          bus.$emit('reverse', { type: 'reverse', isTab: true, transitionName: 'vue-app-effect-out' });
         }
-        window.NavStorage.paths.push(to.path);
+        window.$VueAppEffect.paths.push(to.path);
       }
       next();
     });

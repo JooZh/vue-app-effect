@@ -1,4 +1,5 @@
 import VnodeCache from './vnode-cache'
+// import './transition.css'
 export default {
   install: (Vue, { router, tabbar, common = '' } = {}) => {
     // 判断参数的完整性
@@ -11,13 +12,53 @@ export default {
     window.addEventListener('load', () => {
       router.replace({path: '/'})
     })
+    // 插入 transition 效果文件 偷懒不用改打包文件---------------------
+    const CSS = `
+    .vue-app-effect-out-enter-active,
+    .vue-app-effect-out-leave-active,
+    .vue-app-effect-in-enter-active,
+    .vue-app-effect-in-leave-active {
+      will-change: transform;
+      transition: all 500ms cubic-bezier(0.075, 0.82, 0.165, 1) ;
+      bottom: 50px;
+      top: 0;
+      position: absolute;
+      backface-visibility: hidden;
+      perspective: 1000;
+    }
+    .vue-app-effect-out-enter {
+      opacity: 0;
+      transform: translate3d(-70%, 0, 0);
+    }
+    .vue-app-effect-out-leave-active {
+      opacity: 0 ;
+      transform: translate3d(70%, 0, 0);
+    }
+    .vue-app-effect-in-enter {
+      opacity: 0;
+      transform: translate3d(70%, 0, 0);
+    }
+    .vue-app-effect-in-leave-active {
+      opacity: 0;
+      transform: translate3d(-70%, 0, 0);
+    }`
+    let head = document.head || document.getElementsByTagName('head')[0]
+    let style = document.createElement('style')
+    style.type = 'text/css'
+    if (style.styleSheet){ 
+      style.styleSheet.cssText = CSS; 
+    }else { 
+      style.appendChild(document.createTextNode(CSS))
+    } 
+    head.appendChild(style)
+
     // 返回和前进管理
-    window.NavStorage = {
+    window.$VueAppEffect = {
       'count':0,
       'paths':[]
     }
     if(common){
-      window.NavStorage[common] = 9999999
+      window.$VueAppEffect[common] = 9999999
     }
     
     let isPush = false
@@ -44,8 +85,8 @@ export default {
       }
       // 不是外链的情况下
       // 得到来去的路由序列编号
-      let toIndex = Number(window.NavStorage[to.path])
-      let fromIndex = Number(window.NavStorage[from.path])
+      let toIndex = Number(window.$VueAppEffect[to.path])
+      let fromIndex = Number(window.$VueAppEffect[from.path])
       fromIndex = fromIndex ? fromIndex : 0
       // 进入新路由 判断是否为 tabBar
       let toIsTabBar = tabbar.findIndex(item => item === to.path)
@@ -57,34 +98,34 @@ export default {
         if (toIndex > 0) {
           // 判断是不是返回
           if (toIndex > fromIndex) { // 不是返回
-            bus.$emit('forward', {type:'forward',isTab:false})
-            window.NavStorage.paths.push(to.path)
+            bus.$emit('forward', {type:'forward',isTab:false,transitionName:'vue-app-effect-in'})
+            window.$VueAppEffect.paths.push(to.path)
           } else {                // 是返回
             // 判断是否是ios左滑返回
             if (!isPush && (Date.now() - endTime) < 377) {  
-              bus.$emit('reverse', { type:'', isTab:false })
+              bus.$emit('reverse', { type:'', isTab:false, transitionName:'vue-app-effect-out'})
             } else {
-              bus.$emit('reverse', { type:'reverse', isTab:false })
+              bus.$emit('reverse', { type:'reverse', isTab:false, transitionName:'vue-app-effect-out'})
             }
           }
         // 是返回
         } else {
-          let count = ++ window.NavStorage.count
-          window.NavStorage.count = count
-          window.NavStorage[to.path] = count
-          bus.$emit('forward', { type:'forward', isTab:false })
-          window.NavStorage.paths.push(to.path)
+          let count = ++ window.$VueAppEffect.count
+          window.$VueAppEffect.count = count
+          window.$VueAppEffect[to.path] = count
+          bus.$emit('forward', { type:'forward', isTab:false, transitionName:'vue-app-effect-in'})
+          window.$VueAppEffect.paths.push(to.path)
         }
       // 是进入 tabbar 路由 ---------------------------------------
       } else {
-        window.NavStorage.paths.pop()
+        window.$VueAppEffect.paths.pop()
         // 判断是否是ios左滑返回
         if (!isPush && (Date.now() - endTime) < 377) {
-          bus.$emit('reverse', { type:'', isTab:true })
+          bus.$emit('reverse', { type:'', isTab:true, transitionName:'vue-app-effect-out'})
         } else {
-          bus.$emit('reverse', { type:'reverse', isTab:true })
+          bus.$emit('reverse', { type:'reverse', isTab:true, transitionName:'vue-app-effect-out'})
         }
-        window.NavStorage.paths.push(to.path)
+        window.$VueAppEffect.paths.push(to.path)
       }
       next()
     })

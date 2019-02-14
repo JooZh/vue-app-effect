@@ -25,12 +25,12 @@ export default {
   },
   created () {
     this.$direction.on('forward', (direction) => {
-      this.transitionName = 'vux-pop-in'
+      this.transitionName = direction.transitionName
       this.direction = direction.type
       this.isTab = direction.isTab
     })
     this.$direction.on('reverse', (direction) => {
-      this.transitionName = 'vux-pop-out'
+      this.transitionName = direction.transitionName
       this.direction = direction.type
       this.isTab = direction.isTab
     })
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style lang="stylus">
-@import './assets/css/common'
+@import './assets/css/mxin'
 #app
   width: 100%;
   height:100%;

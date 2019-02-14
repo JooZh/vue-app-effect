@@ -40,11 +40,9 @@ export default {
   },
   methods: {
     back () {
-      window.NavStorage.paths.pop()
-      let newNavStorage = window.NavStorage.paths.concat([])
-      let path = newNavStorage.pop()
+      window.$VueAppEffect.paths.pop()
       this.$router.replace({
-        name: path
+        name: window.$VueAppEffect.paths.concat([]).pop()
       })
     },
     changePlayer () {
@@ -57,7 +55,7 @@ export default {
 </script>
 
 <style lang="stylus">
-  @import '../../assets/css/common';
+  @import '../../assets/css/mxin';
   .hd
     display flex
     height 40px

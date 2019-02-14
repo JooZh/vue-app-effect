@@ -7,7 +7,7 @@ import FastClick from 'fastclick'
 import router from './router'
 
 import '@/assets/css/reset.css'
-import '@/assets/css/vux.css'
+import '@/assets/css/common.styl'
 
 import VnodeCache from '../../src/index'
 

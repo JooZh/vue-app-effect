@@ -60,8 +60,8 @@ export default (bus, tabbar) => {
         // 当不是导航路由，并且不是默认配置路由
         if (isTabBar === -1 && routerIndex >= this.routerLen) {
           // 清除对应历史记录         
-          delete  window.NavStorage[beforePath]
-          window.NavStorage.count -= 1
+          delete  window.$VueAppEffect[beforePath]
+          window.$VueAppEffect.count -= 1
         }
         // 当不是导航的时候 删除上一个缓存
         let key = isTabBar === -1 ? this.$route.fullPath : ''

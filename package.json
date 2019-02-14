@@ -10,7 +10,6 @@
     "build": "npm run build:src && npm run build:examples",
     "build:src": "node build/build.js",
     "build:examples": "cd examples && node build/build.js"
-
   },
   "main": "dist/vue-app-effect.umd.js",
   "module": "dist/vue-app-effect.esm.js",

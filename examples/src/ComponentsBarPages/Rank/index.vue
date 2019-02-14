@@ -26,6 +26,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../assets/css/common';
+@import '../../assets/css/mxin';
 
 </style>

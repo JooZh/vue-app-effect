@@ -1,5 +1,4 @@
 <template>
-
     <transition :name="transitionName" :css="!!direction">
       <div class="sub-view">
         <Header :title="'公共页面'" :show="true" :bg="true" :border="true" :music="false"></Header>
@@ -25,60 +24,47 @@ export default {
   components: {
     Header
   },
-  mounted () {
+  created () {
     this.$direction.on('forward', (direction) => {
-      if (direction.type) {
-        this.transitionName = ''
-      }
-      this.transitionName = 'vux-pop-in'
+      this.transitionName = direction.transitionName
       this.direction = direction.type
     })
     this.$direction.on('reverse', (direction) => {
-      if (direction.type) {
-        this.transitionName = ''
-      }
-      this.transitionName = 'vux-pop-in'
+      this.transitionName = direction.transitionName
       this.direction = direction.type
     })
-  },
-
-  methods: {
-    // 播放页面改变
-    changePlayer () {
-      this.$router.go(-1)
-    }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-@import '../../assets/css/common';
-  .container
-    width 100%
+@import '../../assets/css/mxin';
+.container
+  width 100%
+  position absolute
+  top 40px
+  left 0
+  bottom 0
+  right 0
+  .bd
     position absolute
-    top 40px
+    top 0
     left 0
     bottom 0
     right 0
-    .bd
-      position absolute
-      top 0
-      left 0
-      bottom 0
-      right 0
-      display flex
-      justify-content center
-      align-items center
-      .play
-        width 250px
-        height 250px
-        border 20px solid #454545
+    display flex
+    justify-content center
+    align-items center
+    .play
+      width 250px
+      height 250px
+      border 20px solid #454545
+      border-radius 50%
+      &:before
+        content ' '
+        display block
+        width 100%
+        height 100%
+        background #222222
         border-radius 50%
-        &:before
-          content ' '
-          display block
-          width 100%
-          height 100%
-          background #222222
-          border-radius 50%
 </style>

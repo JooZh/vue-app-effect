@@ -113,7 +113,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../assets/css/common'
+@import '../../assets/css/mxin'
 .container
   width 100%
   position absolute
