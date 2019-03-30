@@ -10,15 +10,15 @@ import Rank from '@/ComponentsBarPages/Rank/index'
 import Singer from '@/ComponentsBarPages/Singer/index'
 import Song from '@/ComponentsBarPages/Song/index'
 
-// 需要被继承的组件
+// 需要重复使用的组件
 import MovieDetail from '@/ComponentsDetails/MovieDetail/index'
 import SingerDetail from '@/ComponentsDetails/SingerDetail/index'
 
 // 公共打开的页面
 import Player from '@/ComponentsCommon/Player/index'
 
-// 每个动态注册的路由重复使用的组件
-Router.prototype.extends = {
+// 每个动态注册的路由重复使用的页面组件。
+Vue.prototype.repeatComponents = {
   MovieDetail,
   SingerDetail
 }

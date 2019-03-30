@@ -3,34 +3,18 @@
     <div class="sub-view">
       <Header :title="'视频详情'" :show="true" :bg="true" :border="true"></Header>
       <div class="container">
-        <div ref="bd" @scroll="scroll" class="bd">
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">
-            <p @click='goDetailMv(id+1,`详情页${id+1}`)'>点击打开MV详情页{{id+1}}</p>
-          </div>
-          <div class="info">
-            <p @click='goDetailSinger(id+1,`详情页${id+1}`)'>点击打开Singer详情页{{id+1}}</p>
-          </div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
-          <div class="info">当前是MV {{name}}</div>
+        <div class="bd">
+          <scroller
+            :scrollingY="true"
+            :data="items">
+            <div class='lists'>
+              <div class="content">当前是{{name}}详情页{{id}}</div>
+              <div class='info' v-for="(item,index) in items" :key="index">
+                <p class="info-button" @click='goDetailSinger(id+1,`Singer`)'>Singer详情页{{id+1}}</p>
+                <p class="info-button" @click='goDetailMv(id+1,`MV`)'>MV详情页{{id+1}}</p>
+              </div>
+            </div>
+          </scroller>
         </div>
       </div>
     </div>
@@ -46,67 +30,36 @@ export default {
   },
   data () {
     return {
-      scrollTop: 0,
       id: 0,
-      name: ''
+      name: '',
+      items:[],
     }
   },
-  activated () {
-    this.$refs.bd.scrollTop = this.scrollTop
-  },
-  mounted () {
+  created() {
     this.id = this.$route.params.id
     this.name = this.$route.params.name
   },
+  mounted () {
+    setTimeout(()=>{
+      this.items = new Array(5)
+    },0)
+  },
   methods: {
     goDetailMv (index, name) {
-      // 创建一个新路由
-      let newPath = `/movie/${index}`
-      let newRoute = [{
-        path: newPath,
-        name: newPath,
-        component: {extends: this.$router.extends.MovieDetail}
-      }]
-      // 判断路由是否存在
-      let find = this.$router.options.routes.findIndex(item => {
-        return item.path === newPath
-      })
-      // 不存在 添加一个新路由
-      if (find === -1) {
-        this.$router.options.routes.push(newRoute[0])
-        this.$router.addRoutes(newRoute)
-      }
-      // 然后跳转
-      this.$router.replace({
-        name: newPath,
-        params: { id: index, name: name }
+      this.$vueAppEffect.next({
+        vm:this,
+        path:`/movie/${index}`,
+        component:this.repeatComponents.MovieDetail,
+        params:{ id: index, name: name }
       })
     },
     goDetailSinger (index, name) {
-      // 创建一个新路由
-      let newPath = `/singer/${index}`
-      let newRoute = [{
-        path: newPath,
-        name: newPath,
-        component: {extends: this.$router.extends.SingerDetail}
-      }]
-      // 判断路由是否存在
-      let find = this.$router.options.routes.findIndex(item => {
-        return item.path === newPath
-      })
-      // 不存在 添加一个新路由
-      if (find === -1) {
-        this.$router.options.routes.push(newRoute[0])
-        this.$router.addRoutes(newRoute)
-      }
-      // 然后跳转
-      this.$router.replace({
-        name: newPath,
+      this.$vueAppEffect.next({
+        vm: this,
+        path: `/singer/${index}`,
+        component: this.repeatComponents.SingerDetail,
         params: { id: index, name: name }
       })
-    },
-    scroll (e) {
-      this.scrollTop = e.target.scrollTop
     }
   }
 }
@@ -127,16 +80,30 @@ export default {
     left 0
     bottom 0
     right 0
-    .info
-      padding 10px
-      font-size $fontM
-      p
-        font-size $fontS
-        background #ccc;
-        color #666666
-        display inline-block
-        line-height 30px
-        height 30px
-        border-radius 10px
-        padding 0 10px
+    .lists
+      margin 0px 10px 20px 10px
+      padding-top 20px
+      .content
+        font-size $fontXL
+        background #444444
+        height 500px
+        text-align center
+        border-radius 5px
+        line-height 500px
+        margin-bottom 20px;
+        margin 0px 10px 20px 10px
+      .info
+        font-size $fontM
+        display flex
+        p.info-button
+          flex 1
+          font-size $fontM
+          background #444444;
+          color #ccc
+          display inline-block
+          line-height 50px
+          // height 50px
+          border-radius 5px
+          margin 0 10px 20px 10px
+          padding 0 20px
 </style>

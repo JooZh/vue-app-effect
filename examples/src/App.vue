@@ -2,7 +2,7 @@
   <div id="app">
     <transition :name="transitionName" :css="!!direction">
       <vnode-cache>
-        <router-view class="router-view"></router-view>
+        <router-view id="router-view"></router-view>
       </vnode-cache>
     </transition>
     <TabBar v-show="isTab"></TabBar>
@@ -24,12 +24,12 @@ export default {
     }
   },
   created () {
-    this.$direction.on('forward', (direction) => {
+    this.$vueAppEffect.on('forward', (direction) => {
       this.transitionName = direction.transitionName
       this.direction = direction.type
       this.isTab = direction.isTab
     })
-    this.$direction.on('reverse', (direction) => {
+    this.$vueAppEffect.on('reverse', (direction) => {
       this.transitionName = direction.transitionName
       this.direction = direction.type
       this.isTab = direction.isTab
@@ -43,7 +43,7 @@ export default {
 #app
   width: 100%;
   height:100%;
-  .router-view
+  #router-view
     width: 100%;
     position:absolute;
     left:0;

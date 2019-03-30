@@ -40,10 +40,7 @@ export default {
   },
   methods: {
     back () {
-      window.$VueAppEffect.paths.pop()
-      this.$router.replace({
-        name: window.$VueAppEffect.paths.concat([]).pop()
-      })
+      this.$vueAppEffect.back(this)
     },
     changePlayer () {
       this.$router.replace({

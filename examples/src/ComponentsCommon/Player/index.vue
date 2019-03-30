@@ -25,11 +25,11 @@ export default {
     Header
   },
   created () {
-    this.$direction.on('forward', (direction) => {
+    this.$vueAppEffect.on('forward', (direction) => {
       this.transitionName = direction.transitionName
       this.direction = direction.type
     })
-    this.$direction.on('reverse', (direction) => {
+    this.$vueAppEffect.on('reverse', (direction) => {
       this.transitionName = direction.transitionName
       this.direction = direction.type
     })

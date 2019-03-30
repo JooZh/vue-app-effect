@@ -1,22 +1,24 @@
 <template>
-  <div>
     <div class="view">
       <Header :title="'视频'" :show="false" :bg="true" :border="true"></Header>
-      <div ref="bd" @scroll="scroll" class="bd">
-        <div class='mvlist' style="min-height:101%">
-          <div class='list' v-for="(item,index) in new Array(30)" :key="index">
-            <div class='detail' @click='goDetail(index+1,`详情页${index+1}`)'>
-              <img class='img' :src="defaultImg">
-              <div class="title-box">
-                <div class='title'>vue-app-effect MV {{index+1}}</div>
+      <div class="bd">
+        <scroller
+          :scrollingY="true"
+          :data="items">
+          <div class='mvlist'>
+            <div class='list' v-for="(item,index) in items" :key="index">
+              <div class='detail' @click='goDetail(index+1,`MV`)'>
+                <img class='img' :src="defaultImg">
+                <div class="title-box">
+                  <div class='title'>vue-app-effect MV {{index+1}}</div>
+                </div>
+                <div class='date'>播放: {{index+1}}.99 万</div>
               </div>
-              <div class='date'>播放: {{index+1}}.99 万</div>
             </div>
           </div>
-        </div>
+        </scroller>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -28,36 +30,23 @@ export default {
   },
   data () {
     return {
-      scrollTop: 0,
+      items:[],
       defaultImg: require('@/assets/images/mv.png')
     }
   },
-  activated () {
-    this.$refs.bd.scrollTop = this.scrollTop
+  mounted(){
+    setTimeout(()=>{
+      this.items = new Array(30)
+    },0)
   },
   methods: {
-    goDetail (index, name) {
-      // 创建一个新路由
-      let newPath = `/movie/${index}`
-      let newRoute = [{
-        path: newPath,
-        name: newPath,
-        component: {extends: this.$router.extends.MovieDetail}
-      }]
-      // 判断路由是否存在 不存在 添加一个新路由
-      let find = this.$router.options.routes.findIndex(item => item.path === newPath)
-      if (find === -1) {
-        this.$router.options.routes.push(newRoute[0])
-        this.$router.addRoutes(newRoute)
-      }
-      // 存在直接跳转到路由
-      this.$router.replace({
-        name: newPath,
-        params: { id: index, name: name }
+    goDetail(index, name){
+      this.$vueAppEffect.next({
+        vm:this,
+        path:`/movie/${index}`,
+        component:this.repeatComponents.MovieDetail,
+        params:{ id: index, name: name }
       })
-    },
-    scroll (e) {
-      this.scrollTop = e.target.scrollTop
     }
   }
 }
