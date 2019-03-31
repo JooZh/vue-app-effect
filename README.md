@@ -14,7 +14,7 @@
 
 ## 在线演示
 
-[Demo演示示例](https://joozh.github.io/vue-app-effect)
+[Demo演示示例](https://joozh.github.io/vue-app-effect/examples)
 
 ## 安装使用
 
