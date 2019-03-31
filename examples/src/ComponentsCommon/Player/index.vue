@@ -1,5 +1,5 @@
 <template>
-    <transition :name="transitionName" :css="!!direction">
+    <transition :name="Direction.transitionName" :css="!!Direction.type">
       <div class="sub-view">
         <Header :title="'公共页面'" :show="true" :bg="true" :border="true" :music="false"></Header>
         <div class="container">
@@ -17,8 +17,11 @@ export default {
   name: 'player',
   data () {
     return {
-      transitionName: '',
-      direction: ''
+      Direction:{
+        type: '',
+        isTabBar: true,
+        transitionName: ''
+      }
     }
   },
   components: {
@@ -26,12 +29,10 @@ export default {
   },
   created () {
     this.$vueAppEffect.on('forward', (direction) => {
-      this.transitionName = direction.transitionName
-      this.direction = direction.type
+      this.Direction = direction
     })
     this.$vueAppEffect.on('reverse', (direction) => {
-      this.transitionName = direction.transitionName
-      this.direction = direction.type
+      this.Direction = direction
     })
   }
 }

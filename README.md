@@ -1,81 +1,88 @@
 # vue-app-effect
-The front-end design scheme is designed to simulate the switching effect and caching effect of the native App page. The operation mode of the App is simulated on the behavior, and the data and page state are saved by forward refreshing and back caching. And you can always save the content of the TAB menu page without being cleared by the router switch.
+实现模拟原生app页面切换效果和缓存效果的前端设计方案, 行为上模拟了app的操作模式，前进刷新，后退缓存，保存数据和页面状态。并且可以始终保存tab菜单页面的内容不会被路由切换清除。
 
-[中文文档](https://github.com/JooZh/vue-app-effect/blob/master/README_CN.md)
+## 使用前提
+需要 vue 2.x , vue-router 2.x 
 
-## Premise
-Need vue 2.x , vue-router 2.x 
+库只是一个核心处理文件，页面结构和配置还需要参考 examples 文件夹中的结果进行搭建
 
-The library is only a core file, and the page structure and configuration need to be built against the results in the examples folder
+注意：每个路由下的组件根节点都需要采用绝对定位的方式，不采用的话切换会有一定问题。
 
-**Note**: the component root node under each routing needs to be positioned in an absolute manner, and switching without this will be problematic.
+推荐：每个路由页面采用 [vue-app-scroller](https://github.com/JooZh/vue-app-scroller) 滚动插件来处理页面的滚动。可以不用自行处理路由切换后滚动条位置的问题。
 
-**Recommendation**: each routing page takes [better-scroll](https://github.com/ustbhuangyi/better-scroll) the scroll plug-in handles the scrolling of the page. You don't have to deal with the scroll bar location after routing switching.
+也可以使用 `-webkit-overflow-scrolling:touch` 对固定容器进行溢出滚动的方式，使用这个需要自行处理滚动条位置问题，
 
-You can use it `-webkit-overflow-scrolling:touch` see the demo example for a way to do overflow scrolling on a stationary container, which requires you to handle the scroll bar location on your own
+## 在线演示
 
-## Demo
+[Demo演示示例](https://joozh.github.io/vue-app-effect/)
 
-[Simple Demo](https://joozh.github.io/vue-app-effect/)
-
-[Full Music App Demo](https://joozh.cn/music/)
-
-## Install
+## 安装使用
 
 ```bash
 $ npm install vue-app-effect -S
 ```
 
-### Options
+### 参数配置 options
 
 ```js
 import Vue from 'vue'
 import router from './router' 
 import VnodeCache from 'vue-app-effect'
-// Parameter configuration
+// 参数配置
 Vue.use(VnodeCache, {
-  router, // necessary
-  tabbar: ['/bar1', '/bar2', '/bar3', '/bar4'], // necessary
-  common: '/common_route' // optional
+  router,  // 必须
+  tabbar: ['/bar1', '/bar2', '/bar3', '/bar4'], // 必须：
+  common: '/common_route'
 })
 ```
-options necessary：[ tabbar ] The route name of the navigation menu advice with / .
+参数 必须：[ tabbar ] 导航菜单的路由名称建议带 / 。
 
-options optional：[ common ] you can add a public route that can be opened anywhere.
+参数 可选：[ common ] 可以添加一个公共路由，这个路由可以在任何地方都能打开。
 
-### Event
-Instantiation `vue-app-effect` use `this.$direction.on()` event monitoring
+### 监听事件 event
+实例化 `vue-app-effect` 使用 `this.$vueAppEffect.on()` 进行事件监听。
 
+每个一级路由下面都需要进行事件监听来处理前进和后退的结果。
 ```js
+data () {
+  return {
+    Direction:{
+      type: '',
+      isTabBar: true,
+      transitionName: ''
+    }
+  }
+},
 created () {
-  // listen forward
-  this.$direction.on('forward', (direction) => {
-   console.log(direction)  //{type:'forward',isTab:false}
+  // 监听前进事件
+  this.$vueAppEffect.on('forward', (direction) => {
+    this.Direction = direction
+    // direction = {type:'forward',isTabBar:false,transitionName: ''}
   })
-  // listen reverse
-  this.$direction.on('reverse', (direction) => {
-    console.log(direction)  // {type:'reverse',isTab:false}
+  // 监听返回事件
+  this.$vueAppEffect.on('reverse', (direction) => {
+    this.Direction = direction
+    // direction = {type:'reverse',isTabBar:false,transitionName: ''}
   })
-  // type value are 'forward', 'reverse', ''
 }
 ```
-### `<vnode-cache>`
+### 数据缓存
 
-Instantiation `vue-app-effect` and then you can use `<vnode-cache></vnode-cache>` non-navigational menu cache management，similar to the `<keep-alive>`
+实例化 `vue-app-effect` 之后可以使用 `<vnode-cache></vnode-cache>` 进行非导航菜单缓存管理，类似于 `<keep-alive>`
 
 ```vue
 <template>
   <div id="app">
-    <transition :name="transitionName" :css="!!direction">
+    <transition :name="Direction.transitionName" :css="!!Direction.type">
       <vnode-cache>
-        <router-view class="router-view"></router-view>
+        <router-view id="router-view"></router-view>
       </vnode-cache>
     </transition>
-    <TabBar></TabBar>
+    <TabBar v-show="Direction.isTabBar"></TabBar>
   </div>
 </template>
 ```
-Used under the container for subpaths of tabbar routing `<keep-alive>` cache for navigation pages.
+在 tabbar 路由的子路由的容器下使用 `<keep-alive>` 进行导航页面的路由缓存。
 
 ```vue
 <template>
@@ -87,62 +94,46 @@ Used under the container for subpaths of tabbar routing `<keep-alive>` cache for
 </template>
 ```
 
-Specific configuration reference [Sample files](https://github.com/JooZh/vue-app-effect/tree/master/examples)
+具体配置参考 [示例文件](https://github.com/JooZh/vue-app-effect/tree/master/examples)
 
-## Dynamic routing realizes multicomponent independent reuse
+## 动态路由实现多组件独立复用
 
-In cases where you need different routes to open the same component and open yourself in the same component, you can dynamically register the routing
+在有些情况下需要不同路由打开同一个组件，而且在同一个组件中打开自己，这种情况下可以采用动态注册路由的方式
 
-router.js
+路由部分，将被需要复用的组件先读取，然后保存在可全局调用的地方。
 
 ```js
 import Router from 'vue-router'
-// Components that need to be inherited
+// 需要被复用的组件
 import Detail from '@/components/Detail/index'
-// Mount to prototype
-Router.prototype.extends = {
+// 每个动态注册的路由重复使用的页面组件。
+Vue.prototype.repeatComponents = {
   Detail
 }
 ```
-with methods
+实例化 `vue-app-effect` 后会得到一个 next 方法 使用 `this.$vueAppEffect.next()` 进行复用组件调用的跳转
 
 ```js
 methods:{
   goDetail (index, name) {
-    // new router
-    let newPath = `/movie/${index}`
-    let newRoute = [{
-      path: newPath,
-      name: newPath,
-      component: {extends: this.$router.extends.Detail}
-    }]
-    // To determine if a routing exists or does not exist add a new routing
-    let find = this.$router.options.routes.findIndex(item => item.path === newPath)
-    if (find === -1) {
-      this.$router.options.routes.push(newRoute[0])
-      this.$router.addRoutes(newRoute)
-    }
-    // There is a direct jump to routing
-    this.$router.replace({
-      name: newPath,
-      params: { id: index, name: name }
+    this.$vueAppEffect.next({
+      vm:this,                // 必传，当前的 this 
+      path:`/movie/${index}`, // 必传，跳转的路由
+      component:this.repeatComponents.Detail,  // 跳转到的组件，可以是保存的复用组件
+      params:{ id: index, name: name }              // 传递的参数
     })
   }
 }
 
 ```
-The back button use a special method
+
+实例化 `vue-app-effect` 后会得到一个 back 方法 使用 `this.$vueAppEffect.back()` 进行 回退操作，一般存在于头部
 
 ```js
 methods: {
-  back () {
-    window.NavStorage.paths.pop()
-    let newNavStorage = window.NavStorage.paths.concat([])
-    let path = newNavStorage.pop()
-    this.$router.replace({
-      name: path
-    })
+    back () {
+      this.$vueAppEffect.back(this)  // 只需要传入 this 
+    }
   }
-}
 
 ```

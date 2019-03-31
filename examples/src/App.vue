@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <transition :name="transitionName" :css="!!direction">
+    <transition :name="Direction.transitionName" :css="!!Direction.type">
       <vnode-cache>
         <router-view id="router-view"></router-view>
       </vnode-cache>
     </transition>
-    <TabBar v-show="isTab"></TabBar>
+    <TabBar v-show="Direction.isTabBar"></TabBar>
   </div>
 </template>
 
@@ -18,21 +18,19 @@ export default {
   },
   data () {
     return {
-      transitionName: '',
-      direction: '',
-      isTab: true
+      Direction:{
+        type: '',
+        isTabBar: true,
+        transitionName: ''
+      }
     }
   },
   created () {
     this.$vueAppEffect.on('forward', (direction) => {
-      this.transitionName = direction.transitionName
-      this.direction = direction.type
-      this.isTab = direction.isTab
+      this.Direction = direction
     })
     this.$vueAppEffect.on('reverse', (direction) => {
-      this.transitionName = direction.transitionName
-      this.direction = direction.type
-      this.isTab = direction.isTab
+      this.Direction = direction
     })
   }
 }

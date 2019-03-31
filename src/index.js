@@ -3,7 +3,7 @@ import install from './install.js'
 import direction from './direction.js'
 
 export default {
-  install: (Vue, { router, tabbar, common = '' } = {}) => {
+  install: (Vue, { router, tabbar, common='' } = {}) => {
     // 判断参数的完整性
     if (!router || !tabbar) {
       console.error('vue-app-effect need options: router, tabbar')

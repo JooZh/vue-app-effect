@@ -49,7 +49,7 @@ function deriection(router,bus,tabbar,common){
     // 进入新路由 判断是否为 tabBar
     let toIsTabBar = tabbar.findIndex(item => item === to.path)
     // 当前路由 判断是否为 tabBar
-    let formIsTabBar = tabbar.findIndex(item => item === from.path)
+    // let formIsTabBar = tabbar.findIndex(item => item === from.path)
     // 不是进入 tabBar 路由 --------------------------
     if (toIsTabBar === -1) {
       // 层级大于0 即非导航层级
@@ -58,7 +58,7 @@ function deriection(router,bus,tabbar,common){
         if (toIndex > fromIndex) { // 不是返回
           bus.$emit('forward', {
             type:'forward',
-            isTab:false,
+            isTabBar:false,
             transitionName:'vue-app-effect-in'
           })
           window.$VueAppEffect.paths.push(to.path)
@@ -67,13 +67,13 @@ function deriection(router,bus,tabbar,common){
           if (!isPush && (Date.now() - endTime) < 377) {  
             bus.$emit('reverse', { 
               type:'', 
-              isTab:false, 
+              isTabBar:false, 
               transitionName:'vue-app-effect-out'
             })
           } else {
             bus.$emit('reverse', { 
               type:'reverse', 
-              isTab:false, 
+              isTabBar:false, 
               transitionName:'vue-app-effect-out'
             })
           }
@@ -85,7 +85,7 @@ function deriection(router,bus,tabbar,common){
         window.$VueAppEffect[to.path] = count
         bus.$emit('forward', { 
           type:'forward', 
-          isTab:false, 
+          isTabBar:false, 
           transitionName:'vue-app-effect-in'
         })
         window.$VueAppEffect.paths.push(to.path)
@@ -97,13 +97,13 @@ function deriection(router,bus,tabbar,common){
       if (!isPush && (Date.now() - endTime) < 377) {
         bus.$emit('reverse', { 
           type:'', 
-          isTab:true, 
+          isTabBar:true, 
           transitionName:'vue-app-effect-out'
         })
       } else {
         bus.$emit('reverse', { 
           type:'reverse', 
-          isTab:true, 
+          isTabBar:true, 
           transitionName:'vue-app-effect-out'
         })
       }

@@ -30,26 +30,28 @@ export default new Router({
     path: '/',
     component: TabCon,
     redirect: '/movie',
-    children: [ {
-      path: '/movie',
-      name: '/movie',
-      component: Movie
+    children: [
+      {
+        path: '/movie',
+        name: '/movie',
+        component: Movie
+      }, {
+        path: '/singer',
+        name: '/singer',
+        component: Singer
+      }, {
+        path: '/rank',
+        name: '/rank',
+        component: Rank
+      }, {
+        path: '/song',
+        name: '/song',
+        component: Song
+      }]
     }, {
-      path: '/singer',
-      name: '/singer',
-      component: Singer
-    }, {
-      path: '/rank',
-      name: '/rank',
-      component: Rank
-    }, {
-      path: '/song',
-      name: '/song',
-      component: Song
-    }]
-  }, {
-    path: '/player',
-    name: '/player',
-    component: Player
-  }]
+      path: '/player',
+      name: '/player',
+      component: Player
+    }
+  ]
 })

@@ -1,6 +1,6 @@
 {
   "name": "vue-app-effect",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A template that simulates app page switching and caching effects",
   "private": false,
   "scripts": {
