@@ -1,8 +1,24 @@
 /**
-* vue-app-effect v1.0.2
+* vue-app-effect v1.0.3
 * https://github.com/JooZh/vue-app-effect
 * Released under the MIT License.
 */
+
+function css() {
+  return '\n    .vue-app-effect-out-enter-active,\n    .vue-app-effect-out-leave-active,\n    .vue-app-effect-in-enter-active,\n    .vue-app-effect-in-leave-active {\n      will-change: transform;\n      transition: all 500ms cubic-bezier(0.075, 0.82, 0.165, 1) ;\n      bottom: 0;\n      top: 0;\n      position: absolute;\n      backface-visibility: hidden;\n      perspective: 1000;\n    }\n    .vue-app-effect-out-enter {\n      opacity: 0;\n      transform: translate3d(-70%, 0, 0);\n    }\n    .vue-app-effect-out-leave-active {\n      opacity: 0 ;\n      transform: translate3d(70%, 0, 0);\n    }\n    .vue-app-effect-in-enter {\n      opacity: 0;\n      transform: translate3d(70%, 0, 0);\n    }\n    .vue-app-effect-in-leave-active {\n      opacity: 0;\n      transform: translate3d(-70%, 0, 0);\n    }\n  ';
+}
+function appendCss() {
+  var cssText = css();
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+  if (style.styleSheet) {
+    style.styleSheet.cssText = cssText;
+  } else {
+    style.appendChild(document.createTextNode(cssText));
+  }
+  head.appendChild(style);
+}
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -111,8 +127,162 @@ var VnodeCache = (function (bus, tabbar) {
   };
 });
 
+function install(Vue, bus, tabbar) {
+  Vue.component('vnode-cache', VnodeCache(bus, tabbar));
+
+  Vue.prototype.$vueAppEffect = {
+    on: function on(event, callback) {
+      bus.$on(event, callback);
+    },
+    back: function back(vm) {
+      window.$VueAppEffect.paths.pop();
+      vm.$router.replace({
+        name: window.$VueAppEffect.paths.concat([]).pop()
+      });
+    },
+    next: function next(options) {
+      var newPath = options.path;
+      var newRoute = [{
+        path: newPath,
+        name: newPath,
+        component: { extends: options.component }
+      }];
+
+      var find = options.vm.$router.options.routes.findIndex(function (item) {
+        return item.path === newPath;
+      });
+
+      if (find === -1) {
+        options.vm.$router.options.routes.push(newRoute[0]);
+        options.vm.$router.addRoutes(newRoute);
+      }
+
+      options.vm.$router.replace({
+        name: newPath,
+        params: options.params
+      });
+    }
+  };
+}
+
+function deriection(router, bus, tabbar, common) {
+  window.addEventListener('load', function () {
+    router.replace({ path: '/' });
+
+    var newVueAppEffect = {
+      count: 0,
+      paths: window.$VueAppEffect.paths
+    };
+    if (common) {
+      newVueAppEffect[common] = 9999999;
+    }
+    window.$VueAppEffect = newVueAppEffect;
+  });
+
+  window.$VueAppEffect = {
+    'count': 0,
+    'paths': []
+  };
+  if (common) {
+    window.$VueAppEffect[common] = 9999999;
+  }
+
+  var isPush = false;
+  var endTime = Date.now();
+  var methods = ['push', 'go', 'replace', 'forward', 'back'];
+  document.addEventListener('touchend', function () {
+    endTime = Date.now();
+  });
+  methods.forEach(function (key) {
+    var method = router[key].bind(router);
+    router[key] = function () {
+      isPush = true;
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      method.apply(null, args);
+    };
+  });
+
+  router.beforeEach(function (to, from, next) {
+    if (/\/http/.test(to.path)) {
+      window.location.href = to.path;
+      return;
+    }
+
+    var toIndex = Number(window.$VueAppEffect[to.path]);
+    var fromIndex = Number(window.$VueAppEffect[from.path]);
+    fromIndex = fromIndex ? fromIndex : 0;
+
+    var toIsTabBar = tabbar.findIndex(function (item) {
+      return item === to.path;
+    });
+
+    if (toIsTabBar === -1) {
+      if (toIndex > 0) {
+        if (toIndex > fromIndex) {
+          bus.$emit('forward', {
+            type: 'forward',
+            isTabBar: false,
+            transitionName: 'vue-app-effect-in'
+          });
+          window.$VueAppEffect.paths.push(to.path);
+        } else {
+          if (!isPush && Date.now() - endTime < 377) {
+            bus.$emit('reverse', {
+              type: '',
+              isTabBar: false,
+              transitionName: 'vue-app-effect-out'
+            });
+          } else {
+            bus.$emit('reverse', {
+              type: 'reverse',
+              isTabBar: false,
+              transitionName: 'vue-app-effect-out'
+            });
+          }
+        }
+      } else {
+        var count = ++window.$VueAppEffect.count;
+        window.$VueAppEffect.count = count;
+        window.$VueAppEffect[to.path] = count;
+        bus.$emit('forward', {
+          type: 'forward',
+          isTabBar: false,
+          transitionName: 'vue-app-effect-in'
+        });
+        window.$VueAppEffect.paths.push(to.path);
+      }
+    } else {
+      window.$VueAppEffect.paths.pop();
+
+      if (!isPush && Date.now() - endTime < 377) {
+        bus.$emit('reverse', {
+          type: '',
+          isTabBar: true,
+          transitionName: 'vue-app-effect-out'
+        });
+      } else {
+        bus.$emit('reverse', {
+          type: 'reverse',
+          isTabBar: true,
+          transitionName: 'vue-app-effect-out'
+        });
+      }
+      window.$VueAppEffect.paths.push(to.path);
+    }
+    next();
+  });
+
+  router.afterEach(function () {
+    isPush = false;
+  });
+}
+
 var index = {
-  install: function install(Vue) {
+  install: function install$$1(Vue) {
     var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
         router = _ref.router,
         tabbar = _ref.tabbar,
@@ -124,110 +294,13 @@ var index = {
       return;
     }
 
-    window.addEventListener('load', function () {
-      router.replace({ path: '/' });
-    });
-
-    var CSS = '\n    .vue-app-effect-out-enter-active,\n    .vue-app-effect-out-leave-active,\n    .vue-app-effect-in-enter-active,\n    .vue-app-effect-in-leave-active {\n      will-change: transform;\n      transition: all 500ms cubic-bezier(0.075, 0.82, 0.165, 1) ;\n      bottom: 50px;\n      top: 0;\n      position: absolute;\n      backface-visibility: hidden;\n      perspective: 1000;\n    }\n    .vue-app-effect-out-enter {\n      opacity: 0;\n      transform: translate3d(-70%, 0, 0);\n    }\n    .vue-app-effect-out-leave-active {\n      opacity: 0 ;\n      transform: translate3d(70%, 0, 0);\n    }\n    .vue-app-effect-in-enter {\n      opacity: 0;\n      transform: translate3d(70%, 0, 0);\n    }\n    .vue-app-effect-in-leave-active {\n      opacity: 0;\n      transform: translate3d(-70%, 0, 0);\n    }';
-    var head = document.head || document.getElementsByTagName('head')[0];
-    var style = document.createElement('style');
-    style.type = 'text/css';
-    if (style.styleSheet) {
-      style.styleSheet.cssText = CSS;
-    } else {
-      style.appendChild(document.createTextNode(CSS));
-    }
-    head.appendChild(style);
-
-    window.$VueAppEffect = {
-      'count': 0,
-      'paths': []
-    };
-    if (common) {
-      window.$VueAppEffect[common] = 9999999;
-    }
-
-    var isPush = false;
-    var endTime = Date.now();
-    var methods = ['push', 'go', 'replace', 'forward', 'back'];
-    document.addEventListener('touchend', function () {
-      endTime = Date.now();
-    });
-    methods.forEach(function (key) {
-      var method = router[key].bind(router);
-      router[key] = function () {
-        isPush = true;
-
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
-        }
-
-        method.apply(null, args);
-      };
-    });
-
     var bus = new Vue();
-    router.beforeEach(function (to, from, next) {
-      if (/\/http/.test(to.path)) {
-        window.location.href = to.path;
-        return;
-      }
 
-      var toIndex = Number(window.$VueAppEffect[to.path]);
-      var fromIndex = Number(window.$VueAppEffect[from.path]);
-      fromIndex = fromIndex ? fromIndex : 0;
+    appendCss();
 
-      var toIsTabBar = tabbar.findIndex(function (item) {
-        return item === to.path;
-      });
+    install(Vue, bus, tabbar);
 
-      var formIsTabBar = tabbar.findIndex(function (item) {
-        return item === from.path;
-      });
-
-      if (toIsTabBar === -1) {
-        if (toIndex > 0) {
-          if (toIndex > fromIndex) {
-            bus.$emit('forward', { type: 'forward', isTab: false, transitionName: 'vue-app-effect-in' });
-            window.$VueAppEffect.paths.push(to.path);
-          } else {
-            if (!isPush && Date.now() - endTime < 377) {
-              bus.$emit('reverse', { type: '', isTab: false, transitionName: 'vue-app-effect-out' });
-            } else {
-              bus.$emit('reverse', { type: 'reverse', isTab: false, transitionName: 'vue-app-effect-out' });
-            }
-          }
-        } else {
-          var count = ++window.$VueAppEffect.count;
-          window.$VueAppEffect.count = count;
-          window.$VueAppEffect[to.path] = count;
-          bus.$emit('forward', { type: 'forward', isTab: false, transitionName: 'vue-app-effect-in' });
-          window.$VueAppEffect.paths.push(to.path);
-        }
-      } else {
-        window.$VueAppEffect.paths.pop();
-
-        if (!isPush && Date.now() - endTime < 377) {
-          bus.$emit('reverse', { type: '', isTab: true, transitionName: 'vue-app-effect-out' });
-        } else {
-          bus.$emit('reverse', { type: 'reverse', isTab: true, transitionName: 'vue-app-effect-out' });
-        }
-        window.$VueAppEffect.paths.push(to.path);
-      }
-      next();
-    });
-
-    router.afterEach(function () {
-      isPush = false;
-    });
-
-    Vue.component('vnode-cache', VnodeCache(bus, tabbar));
-
-    Vue.direction = Vue.prototype.$direction = {
-      on: function on(event, callback) {
-        bus.$on(event, callback);
-      }
-    };
+    deriection(router, bus, tabbar, common);
   }
 };
 
