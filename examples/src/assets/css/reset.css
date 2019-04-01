@@ -9,7 +9,7 @@ html,body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 12px;
-  color: #999
+  color: #999;
 }
 a {
   text-decoration: none;

@@ -38,7 +38,7 @@ export default {
   mounted () {
     setTimeout(()=>{
       this.items = new Array(30)
-    },50)
+    },0)
   },
   methods: {
     goDetail (index, name) {
