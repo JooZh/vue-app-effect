@@ -1,6 +1,6 @@
 <template>
-    <div class="view">
-      <Header :title="'歌手'" :show="false"></Header>
+    <div class="view" v-show="show">
+      <Header :title="'歌手'" :show="false" :bg="true" :border="true"></Header>
       <div class="bd">
         <scroller
           :scrollingY="true"
@@ -31,14 +31,16 @@ export default {
   },
   data () {
     return {
+      show:false,
       items:[],
       defaultImg: require('@/assets/images/singer.png')
     }
   },
-  mounted () {
-    setTimeout(()=>{
-      this.items = new Array(30)
-    },0)
+  created () {
+    this.items = new Array(30)
+  },
+  mounted(){
+    this.show = true
   },
   methods: {
     goDetail (index, name) {

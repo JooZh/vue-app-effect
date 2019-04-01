@@ -1,5 +1,5 @@
 <template>
-    <div class="view">
+    <div class="view" v-show="show">
       <Header :title="'视频'" :show="false" :bg="true" :border="true"></Header>
       <div class="bd">
         <scroller
@@ -30,14 +30,16 @@ export default {
   },
   data () {
     return {
+      show:false,
       items:[],
       defaultImg: require('@/assets/images/mv.png')
     }
   },
+  created () {
+    this.items = new Array(30)
+  },
   mounted(){
-    setTimeout(()=>{
-      this.items = new Array(30)
-    },0)
+    this.show = true
   },
   methods: {
     goDetail(index, name){
