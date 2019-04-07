@@ -42,7 +42,7 @@ export default {
   mounted () {
     setTimeout(()=>{
       this.items = new Array(5)
-    },0)
+    },50)
   },
   methods: {
     goDetailMv (index, name) {

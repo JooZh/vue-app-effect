@@ -1,24 +1,24 @@
 <template>
-    <div class="view" v-show="show">
-      <Header :title="'视频'" :show="false" :bg="true" :border="true"></Header>
-      <div class="bd">
-        <scroller
-          :scrollingY="true"
-          :data="items">
-          <div class='mvlist'>
-            <div class='list' v-for="(item,index) in items" :key="index">
-              <div class='detail' @click='goDetail(index+1,`MV`)'>
-                <img class='img' :src="defaultImg">
-                <div class="title-box">
-                  <div class='title'>vue-app-effect MV {{index+1}}</div>
-                </div>
-                <div class='date'>播放: {{index+1}}.99 万</div>
+  <div class="view" v-show="show">
+    <Header :title="'视频'" :show="false" :bg="true" :border="true"></Header>
+    <div class="bd">
+      <scroller
+        :scrollingY="true"
+        :data="items">
+        <div class='mvlist'>
+          <div class='list' v-for="(item,index) in items" :key="index">
+            <div class='detail' @click='goDetail(index+1,`MV`)'>
+              <img class='img' :src="defaultImg">
+              <div class="title-box">
+                <div class='title'>vue-app-effect MV {{index+1}}</div>
               </div>
+              <div class='date'>播放: {{index+1}}.99 万</div>
             </div>
           </div>
-        </scroller>
-      </div>
+        </div>
+      </scroller>
     </div>
+  </div>
 </template>
 
 <script>
@@ -36,7 +36,9 @@ export default {
     }
   },
   created () {
-    this.items = new Array(30)
+    setTimeout(()=>{
+      this.items = new Array(30)
+    },500)
   },
   mounted(){
     this.show = true
