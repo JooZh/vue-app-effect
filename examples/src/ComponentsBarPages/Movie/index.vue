@@ -1,22 +1,24 @@
 <template>
-  <div class="view" v-show="show">
-    <Header :title="'视频'" :show="false" :bg="true" :border="true"></Header>
-    <div class="bd">
-      <scroller
-        :scrollingY="true"
-        :data="items">
-        <div class='mvlist'>
-          <div class='list' v-for="(item,index) in items" :key="index">
-            <div class='detail' @click='goDetail(index+1,`MV`)'>
-              <img class='img' :src="defaultImg">
-              <div class="title-box">
-                <div class='title'>vue-app-effect MV {{index+1}}</div>
+  <div>
+    <div class="view movie-container" v-show="show">
+      <Header :title="'视频'" :show="false" :bg="true" :border="true"></Header>
+      <div class="bd">
+        <scroller
+          :scrollingY="true"
+          :data="items">
+          <div class='mvlist'>
+            <div class='list' v-for="(item,index) in items" :key="index">
+              <div class='detail' @click='goDetail(index+1,`MV`)'>
+                <img class='img' :src="defaultImg">
+                <div class="title-box">
+                  <div class='title'>vue-app-effect MV {{index+1}}</div>
+                </div>
+                <div class='date'>播放: {{index+1}}.99 万</div>
               </div>
-              <div class='date'>播放: {{index+1}}.99 万</div>
             </div>
           </div>
-        </div>
-      </scroller>
+        </scroller>
+      </div>
     </div>
   </div>
 </template>
@@ -56,47 +58,38 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 @import '../../assets/css/mxin'
-.mvlist
-  color:rgba(255,255,255,0.5)
-  display flex
-  padding 5px
-  flex-wrap wrap
-  .list
-    flex 50% 0 0
-    .detail
-      padding 5px
-      position relative
-      .img
-        width: 100%;
-      .title-box
-        height: 30px;
+.movie-container
+  .mvlist
+    color:rgba(255,255,255,0.5)
+    display flex
+    padding 5px
+    flex-wrap wrap
+    .list
+      flex 50% 0 0
+      .detail
+        padding 5px
         position relative
-        line-height: 30px;
-      .title
-        position absolute
-        left 0
-        right 0
-        font-size: $fontS;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        word-wrap: normal;
-      .date
-        font-size: $fontXS
-        i
-          font-size 20px
+        .img
+          width: 100%;
+        .title-box
+          height: 30px;
           position relative
-          top -1px
-@media screen and (max-width:480px)
-  .img
-    height 108px
-@media screen and (max-width:375px)
-  .img
-    height 97px
-@media screen and (max-width:320px)
-  .img
-    height 82px
-
+          line-height: 30px;
+        .title
+          position absolute
+          left 0
+          right 0
+          font-size: $fontS;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-wrap: normal;
+        .date
+          font-size: $fontXS
+          i
+            font-size 20px
+            position relative
+            top -1px
 </style>

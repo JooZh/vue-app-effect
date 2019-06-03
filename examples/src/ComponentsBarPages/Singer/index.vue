@@ -1,5 +1,6 @@
 <template>
-  <div class="view" v-show="show">
+<div>
+  <div class="view singer-container" v-show="show">
     <Header :title="'歌手'" :show="false" :bg="true" :border="true"></Header>
     <div class="bd">
       <scroller
@@ -20,6 +21,7 @@
       </scroller>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -57,38 +59,39 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 @import '../../assets/css/mxin'
-.mvlist
-  color:rgba(255,255,255,0.5)
-  display flex
-  padding 5px
-  flex-wrap wrap
-  .list
-    flex 50% 0 0
-    .detail
-      padding 5px
-      position relative
-      .img
-        width: 100%;
-      .title-box
-        height: 30px;
+.singer-container
+  .mvlist
+    color:rgba(255,255,255,0.5)
+    display flex
+    padding 5px
+    flex-wrap wrap
+    .list
+      flex 50% 0 0
+      .detail
+        padding 5px
         position relative
-        line-height: 30px;
-      .title
-        position absolute
-        left 0
-        right 0
-        font-size: $fontS;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        word-wrap: normal;
-      .date
-        font-size: $fontXS
-        i
-          font-size 20px
+        .img
+          width: 100%;
+        .title-box
+          height: 30px;
           position relative
-          top -1px
+          line-height: 30px;
+        .title
+          position absolute
+          left 0
+          right 0
+          font-size: $fontS;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-wrap: normal;
+        .date
+          font-size: $fontXS
+          i
+            font-size 20px
+            position relative
+            top -1px
 
 </style>

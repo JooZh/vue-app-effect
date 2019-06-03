@@ -1,6 +1,6 @@
 <template>
   <div id="tab-bar">
-    <div class="container border-half-top">
+    <div class="nav border-half-top">
       <router-link class="bar" :to="'/movie'" replace>
         <div class="button">
           <div class="icon"><i class="fa fa-video-camera"></i></div>
@@ -13,7 +13,7 @@
           <div class="text">歌手</div>
         </div>
       </router-link>
-      <router-link class="bar" :to="'/rank'" replace>
+      <!-- <router-link class="bar" :to="'/rank'" replace>
         <div class="button">
           <div class="icon"><i class="fa fa-camera-retro"></i></div>
           <div class="text">排行</div>
@@ -24,7 +24,7 @@
           <div class="icon"><i class="fa fa-camera-retro"></i></div>
           <div class="text">歌单</div>
         </div>
-      </router-link>
+      </router-link> -->
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
 
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
   @import '../../assets/css/mxin';
   #tab-bar
     height 50px
@@ -43,7 +43,7 @@ export default {
     left 0
     right 0
     z-index 4
-    .container
+    .nav
       display flex
       width 100%
       height 100%

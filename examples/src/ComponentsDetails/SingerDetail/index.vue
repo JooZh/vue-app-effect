@@ -65,7 +65,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 @import '../../assets/css/mxin'
 .container
   width 100%

@@ -1,44 +1,27 @@
 <template>
-    <transition :name="Direction.transitionName" :css="!!Direction.type">
-      <div class="sub-view">
-        <Header :title="'公共页面'" :show="true" :bg="true" :border="true" :music="false"></Header>
-        <div class="container">
-          <div class="bd">
-            <div class="play"></div>
-          </div>
+  <div>
+    <div class="sub-view">
+      <Header :title="'公共页面'" :show="true" :bg="true" :border="true" :music="false"></Header>
+      <div class="container">
+        <div class="bd">
+          <div class="play"></div>
         </div>
       </div>
-    </transition>
+    </div>
+  </div>
 </template>
 
 <script>
 import Header from '@/ComponentsLayout/Header/index'
 export default {
   name: 'player',
-  data () {
-    return {
-      Direction:{
-        type: '',
-        isTabBar: true,
-        transitionName: ''
-      }
-    }
-  },
   components: {
     Header
-  },
-  created () {
-    this.$vueAppEffect.on('forward', (direction) => {
-      this.Direction = direction
-    })
-    this.$vueAppEffect.on('reverse', (direction) => {
-      this.Direction = direction
-    })
   }
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 @import '../../assets/css/mxin';
 .container
   width 100%

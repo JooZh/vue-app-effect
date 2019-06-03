@@ -3,7 +3,6 @@ import Router from 'vue-router'
 
 // tabBar 容器
 import TabCon from '@/ComponentsLayout/TabCon/index'
-
 // tabBar 页面
 import Movie from '@/ComponentsBarPages/Movie/index'
 import Rank from '@/ComponentsBarPages/Rank/index'
@@ -26,29 +25,32 @@ Vue.prototype.repeatComponents = {
 Vue.use(Router)
 
 export default new Router({
-  routes: [{
-    path: '/',
-    component: TabCon,
-    redirect: '/movie',
-    children: [
-      {
-        path: '/movie',
-        name: '/movie',
-        component: Movie
-      }, {
-        path: '/singer',
-        name: '/singer',
-        component: Singer
-      }, {
-        path: '/rank',
-        name: '/rank',
-        component: Rank
-      }, {
-        path: '/song',
-        name: '/song',
-        component: Song
-      }]
-    }, {
+  routes: [
+    {
+      path: '/',
+      component: TabCon,
+      redirect: '/movie',
+      children: [
+        {
+          path: '/movie',
+          name: '/movie',
+          component: Movie
+        }, {
+          path: '/singer',
+          name: '/singer',
+          component: Singer
+        }, {
+          path: '/rank',
+          name: '/rank',
+          component: Rank
+        }, {
+          path: '/song',
+          name: '/song',
+          component: Song
+        }
+      ]
+    }, 
+    {
       path: '/player',
       name: '/player',
       component: Player
