@@ -29,6 +29,8 @@ function css(){
       transform: translate3d(-70%, 0, 0);
     }
   `
+
+  
 }
 function appendCss(){
   let cssText = css()
