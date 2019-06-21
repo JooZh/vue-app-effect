@@ -38,3 +38,6 @@ function install (Vue,bus,tabbar){
   }
 }
 export default install
+
+
+
