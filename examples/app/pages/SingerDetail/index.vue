@@ -1,33 +1,17 @@
 <template>
-  <div>
-    <div class="sub-view">
-      <Header :title="'视频详情'" :show="true" :bg="true" :border="true"></Header>
-      <div class="container">
-        <div class="bd">
-          <scroller
-            :scrollingY="true"
-            :data="items">
-            <div class='lists'>
-              <div class="content">当前是{{name}}详情页{{id}}</div>
-              <div class='info' v-for="(item,index) in items" :key="index">
-                <p class="info-button" @click='goDetailSinger(id+1,`Singer`)'>Singer详情页{{id+1}}</p>
-                <p class="info-button" @click='goDetailMv(id+1,`MV`)'>MV详情页{{id+1}}</p>
-              </div>
-            </div>
-          </scroller>
-        </div>
+  <page title="歌手详情">
+    <div class='lists'>
+      <div class="content">当前是{{name}}详情页{{id}}</div>
+      <div class='info' v-for="(item,index) in items" :key="index">
+        <p class="info-button" @click='goDetailSinger(id+1,`Singer`)'>Singer详情页{{id+1}}</p>
+        <p class="info-button" @click='goDetailMv(id+1,`MV`)'>MV详情页{{id+1}}</p>
       </div>
     </div>
-  </div>
+  </page>
 </template>
-
 <script>
-import Header from '@/ComponentsLayout/Header/index'
 export default {
-  name: 'mv-detail',
-  components: {
-    Header
-  },
+  name: 'singer-detail',
   data () {
     return {
       id: 0,
@@ -47,17 +31,13 @@ export default {
   methods: {
     goDetailMv (index, name) {
       this.$vueAppEffect.next({
-        vm:this,
-        path:`/movie/${index}`,
-        component:this.repeatComponents.MovieDetail,
+        path:`pages/MovieDetail/index/${index}`,
         params:{ id: index, name: name }
       })
     },
     goDetailSinger (index, name) {
       this.$vueAppEffect.next({
-        vm: this,
-        path: `/singer/${index}`,
-        component: this.repeatComponents.SingerDetail,
+        path: `pages/SingerDetail/index/${index}`,
         params: { id: index, name: name }
       })
     }
@@ -66,20 +46,7 @@ export default {
 </script>
 
 <style lang="stylus">
-@import '../../assets/css/mxin'
-.container
-  width 100%
-  position absolute
-  top 40px
-  left 0
-  bottom 0
-  right 0
-  .bd
-    position absolute
-    top 0
-    left 0
-    bottom 0
-    right 0
+@import '~app/assets/css/mxin'
     .lists
       margin 0px 10px 20px 10px
       padding-top 20px

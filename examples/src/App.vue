@@ -4,19 +4,14 @@
       <vnode-cache>
         <router-view id="page-view"></router-view>
       </vnode-cache>
-    </transition> 
+    </transition>
     <TabBar v-show="Direction.isTabBar"></TabBar>
   </div>
 </template>
 
 <script>
-import TabBar from '@/ComponentsLayout/TabBar/index'
-
 export default {
   name: 'App',
-  components: {
-    TabBar,
-  },
   data () {
     return {
       Direction:{
@@ -38,7 +33,6 @@ export default {
 </script>
 
 <style lang="stylus">
-@import './assets/css/mxin'
 #app
   width: 100%;
   height:100%;
@@ -53,25 +47,32 @@ export default {
     #tab-router-view
       width 100%
       height 100%
-      .view
-        width 100%
-        height 100%
-        position relative
-        .bd
-          position absolute
-          top 40px
-          left 0
-          right 0
-          bottom 0
-          overflow hidden
-    .sub-view
+      .bd-view
+        position absolute
+        top 40px
+        left 0
+        right 0
+        bottom 0
+        overflow hidden
+        &.bd-view-full
+          top 0
+        .container
+          position relative
+    #sub-router-view
       position: relative;
       width: 100%;
       height: calc(100% + 50px);
       background: #252525;
       z-index: 12;
-      .bd
-        overflow-y scroll
-        -webkit-overflow-scrolling : touch
-
+      .bd-view
+        position absolute
+        top 40px
+        left 0
+        right 0
+        bottom 0
+        overflow hidden
+        &.bd-view-full
+          top 0
+        .container
+          position relative
 </style>

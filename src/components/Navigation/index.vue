@@ -1,50 +1,35 @@
 <template>
-  <div class="hd" :class="{'bg':bg,'border-half-bottom':border}">
+  <div class="hd-view" v-if="title">
     <div class="back-btn">
-      <div @click="back"><i v-if="show" class="fa fa-angle-left"></i></div>
+      <div @click="back"><i v-if="backShow" class="fa fa-angle-left"></i></div>
     </div>
     <div class="title">{{title}}</div>
     <div class="show-cd" @click="changePlayer">
-      <Music v-if="music"></Music>
+      <!-- <Music v-if="music"></Music> -->
     </div>
   </div>
 </template>
 
 <script>
-import Music from '@/ComponentsCommon/Music/index'
+// import Music from '../../components/Music/index'
 export default {
   props: {
     title: {
       type: String,
-      default: '标题'
+      default: ''
     },
-    show: {
+    backShow:{
       type: Boolean,
-      default: true
-    },
-    bg: {
-      type: Boolean,
-      default: true
-    },
-    border: {
-      type: Boolean,
-      default: true
-    },
-    music: {
-      type: Boolean,
-      default: true
+      // default: false
     }
-  },
-  components: {
-    Music
   },
   methods: {
     back () {
-      this.$vueAppEffect.back(this)
+      this.$vueAppEffect.back()
     },
     changePlayer () {
-      this.$router.replace({
-        path: `/player`
+      this.$vueAppEffect.next({
+        path: `/pages/Player/index`
       })
     }
   }
@@ -52,14 +37,13 @@ export default {
 </script>
 
 <style lang="stylus">
-  @import '../../assets/css/mxin';
-  .hd
+  .hd-view
     display flex
     height 40px
-    font-size $fontM
+    font-size 16px
     line-height 40px
     text-align center
-    color $themeColor
+    color #ffcd32
     width 100%
     position fixed !important
     top 0
@@ -69,7 +53,7 @@ export default {
     transition background 0.4s
     &.bg
       transition background 0.4s
-      background $bgColor
+      background #252525
     .title
       flex 1
       text-align center
@@ -86,12 +70,11 @@ export default {
       display flex
       justify-content center
       align-items center
-
       .pi
         width 30px
         height 30px
         border-radius: 50%
-        border 1px solid $themeColor
+        border 1px solid #ffcd32
         display flex
         justify-content center
         align-items center

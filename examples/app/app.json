@@ -1,0 +1,13 @@
+{
+  "pages":[
+    "pages/MovieDetail/index",
+    "pages/SingerDetail/index"
+  ],
+  "barPages":[
+    "tabs/Movie/index",
+    "tabs/Rank/index",
+    "tabs/Singer/index",
+    "tabs/Song/index"
+  ],
+  "commonPage":"pages/Player/index"
+}

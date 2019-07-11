@@ -51,7 +51,7 @@ export default (bus, tabbar) => {
     methods: {
       reverse () {
         let beforePath = this.paths.pop()
-        
+
         let routes = this.$router.options.routes
         // 查询是不是导航路由
         let isTabBar = this.tabBar.findIndex(item => item === this.$route.fullPath)
@@ -59,7 +59,7 @@ export default (bus, tabbar) => {
         let routerIndex = routes.findIndex(item => item.path === beforePath)
         // 当不是导航路由，并且不是默认配置路由
         if (isTabBar === -1 && routerIndex >= this.routerLen) {
-          // 清除对应历史记录         
+          // 清除对应历史记录
           delete  window.$VueAppEffect[beforePath]
           window.$VueAppEffect.count -= 1
         }
@@ -69,7 +69,7 @@ export default (bus, tabbar) => {
           this.cache[beforePath].componentInstance.$destroy()
           delete this.cache[beforePath]
         }
-        // console.log('删除后：', this.cache)
+        // console.log('删除：', this.cache)
       }
     },
     render () {
@@ -85,10 +85,12 @@ export default (bus, tabbar) => {
         // 判断是否缓存过了
         if (this.cache[key]) {
           vnode.componentInstance = this.cache[key].componentInstance
+          // console.log('激活', this.cache)
         } else {
           this.cache[key] = vnode
+          // console.log('新增', this.cache)
         }
-        // console.log('保存后：', this.cache)
+
         vnode.data.keepAlive = true
       }
       return vnode

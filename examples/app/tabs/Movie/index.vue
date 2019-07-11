@@ -1,57 +1,40 @@
 <template>
-<div>
-  <div class="view singer-container" v-show="show">
-    <Header :title="'歌手'" :show="false" :bg="true" :border="true"></Header>
-    <div class="bd">
-      <scroller
-        :scrollingY="true"
-        :mousewheel="true"
-        :data="items">
-        <div class='mvlist'>
-          <div class='list' v-for="(item,index) in items" :key="index">
-            <div class='detail' @click='goDetail(index+1,`Singer`)'>
-              <img class='img' :src="defaultImg">
-              <div class="title-box">
-                <div class='title'>vue-app-effect Sge {{index+1}}</div>
-              </div>
-              <div class='date'>播放: {{index+1}}.99 万</div>
-            </div>
+  <Page title="视频" isTab>
+    <div class='mvlist'>
+      <div class='list' v-for="(item,index) in items" :key="index">
+        <div class='detail' @click='goDetail(index+1,`MV`)'>
+          <img class='img' :src="defaultImg">
+          <div class="title-box">
+            <div class='title'>vue-app-effect MV {{index+1}}</div>
           </div>
+          <div class='date'>播放: {{index+1}}.99 万</div>
         </div>
-      </scroller>
+      </div>
     </div>
-  </div>
-</div>
+  </Page>
 </template>
-
 <script>
-import Header from '@/ComponentsLayout/Header/index'
 export default {
-  name: 'singer',
-  components: {
-    Header
-  },
+  name: 'movie',
   data () {
     return {
       show:false,
       items:[],
-      defaultImg: require('@/assets/images/singer.png')
+      defaultImg: require('../../assets/images/mv.png')
     }
   },
   created () {
     setTimeout(()=>{
       this.items = new Array(30)
-    },500)
+    },100)
   },
   mounted(){
     this.show = true
   },
   methods: {
-    goDetail (index, name) {
+    goDetail(index, name){
       this.$vueAppEffect.next({
-        vm:this,
-        path:`/singer/${index}`,
-        component:this.repeatComponents.SingerDetail,
+        path:`/pages/MovieDetail/index/${index}`,
         params:{ id: index, name: name }
       })
     }
@@ -61,7 +44,6 @@ export default {
 
 <style lang="stylus">
 @import '../../assets/css/mxin'
-.singer-container
   .mvlist
     color:rgba(255,255,255,0.5)
     display flex
@@ -93,5 +75,4 @@ export default {
             font-size 20px
             position relative
             top -1px
-
 </style>

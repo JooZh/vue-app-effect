@@ -13,7 +13,7 @@ export default {
     const bus = new Vue()
     // 载入页面 css
     loadCss()
-    // 执行 install 
+    // 执行 install
     install(Vue,bus,tabbar)
     // 执行 router 监听事件
     direction(router,bus,tabbar,common)

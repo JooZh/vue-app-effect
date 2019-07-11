@@ -20,7 +20,7 @@ function deriection(router,bus,tabbar,common){
   if(common){
     window.$VueAppEffect[common] = 9999999
   }
-  
+
   let isPush = false
   let endTime = Date.now()
   let methods = ['push', 'go', 'replace', 'forward', 'back']
@@ -64,16 +64,16 @@ function deriection(router,bus,tabbar,common){
           window.$VueAppEffect.paths.push(to.path)
         } else {                // 是返回
           // 判断是否是ios左滑返回
-          if (!isPush && (Date.now() - endTime) < 377) {  
-            bus.$emit('reverse', { 
-              type:'', 
-              isTabBar:false, 
+          if (!isPush && (Date.now() - endTime) < 377) {
+            bus.$emit('reverse', {
+              type:'',
+              isTabBar:false,
               transitionName:'vue-app-effect-out'
             })
           } else {
-            bus.$emit('reverse', { 
-              type:'reverse', 
-              isTabBar:false, 
+            bus.$emit('reverse', {
+              type:'reverse',
+              isTabBar:false,
               transitionName:'vue-app-effect-out'
             })
           }
@@ -83,9 +83,9 @@ function deriection(router,bus,tabbar,common){
         let count = ++ window.$VueAppEffect.count
         window.$VueAppEffect.count = count
         window.$VueAppEffect[to.path] = count
-        bus.$emit('forward', { 
-          type:'forward', 
-          isTabBar:false, 
+        bus.$emit('forward', {
+          type:'forward',
+          isTabBar:false,
           transitionName:'vue-app-effect-in'
         })
         window.$VueAppEffect.paths.push(to.path)
@@ -95,15 +95,15 @@ function deriection(router,bus,tabbar,common){
       window.$VueAppEffect.paths.pop()
       // 判断是否是ios左滑返回
       if (!isPush && (Date.now() - endTime) < 377) {
-        bus.$emit('reverse', { 
-          type:'', 
-          isTabBar:true, 
+        bus.$emit('reverse', {
+          type:'',
+          isTabBar:true,
           transitionName:'vue-app-effect-out'
         })
       } else {
-        bus.$emit('reverse', { 
-          type:'reverse', 
-          isTabBar:true, 
+        bus.$emit('reverse', {
+          type:'reverse',
+          isTabBar:true,
           transitionName:'vue-app-effect-out'
         })
       }
