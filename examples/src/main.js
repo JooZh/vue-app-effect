@@ -7,12 +7,17 @@ import router from './router.js'
 import config from 'app/app.json'
 import VueAppScroller from 'vue-app-scroller';
 import VnodeCache from '../../src/index'
+import Page from './components/Page'
+import TabBar from './components/TabBar'
 
 require(`app/app.js`);
 
 Vue.config.productionTip = false
 
 FastClick.attach(document.body);
+
+Vue.component('Page', Page)
+Vue.component('TabBar', TabBar)
 
 Vue.use(VueAppScroller);
 

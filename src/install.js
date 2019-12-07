@@ -1,28 +1,26 @@
 import VnodeCache from './vnode-cache.js'
-import Page from './components/Page'
-import TabBar from './components/TabBar'
-// import TabPage from './components/TabPage'
 
 function install (Vue,bus,tabbar){
   // vnode-cache 组件
   Vue.component('vnode-cache', VnodeCache(bus, tabbar))
-  Vue.component('Page', Page)
-  Vue.component('TabBar', TabBar)
-  // Vue.component('TabPage', TabPage)
-
+  // 挂载方法
   Vue.prototype.$vueAppEffect = {
+    // 监听事件
     on: (event, callback) => {
       bus.$on(event, callback)
     },
+    // 返回上一页面
     back: ()=>{
       window.$VueAppEffect.paths.pop()
       window.vm.$router.replace({
         name: window.$VueAppEffect.paths.concat([]).pop()
       })
     },
+    // 返回上一个指定的页面
     backTo: (options)=>{
       //
     },
+    // 跳到下一个页面
     next: (options)=>{
       let routePath = options.path
       routePath = routePath.indexOf('/') !== 0 ? `/${routePath}` : routePath;
@@ -57,6 +55,18 @@ function install (Vue,bus,tabbar){
         name: routePath,
         params: options.params
       })
+    },
+    // 关闭当前页面跳转到某一个页面
+    redirectTo:()=>{
+
+    },
+    // 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面
+    switchTab:()=>{
+
+    },
+    // 关闭所有页面，打开到应用内的某个页面
+    reLaunch:()=>{
+
     }
   }
 }
