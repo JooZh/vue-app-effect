@@ -1,13 +1,53 @@
 {
+  "basePath":"/app/",
   "pages":[
     "pages/MovieDetail/index",
     "pages/SingerDetail/index"
   ],
-  "barPages":[
-    "tabs/Movie/index",
-    "tabs/Rank/index",
-    "tabs/Singer/index",
-    "tabs/Song/index"
-  ],
+  "customTabBarComponent": "pages/SingerDetail/index",
+  "tabBar":{
+    "barHeight":"",
+    "backgroundColor":"",
+    "position":"",
+    "list":[
+      {
+        "text":"推荐",
+        "path":"pages/Recomment/index",
+        "iconFont":"<i class='fa fa-video-camera'></i>",
+        "iconFontActive":"",
+        "iconImagePath":"",
+        "iconImageActivePath":""
+      },
+      {
+        "text":"视频",
+        "path":"pages/Movie/index",
+        "iconFont":"<i class='fa fa-video-camera'></i>",
+        "iconFontActive":"",
+        "iconImagePath":"",
+        "iconImageActivePath":""
+      },{
+        "text":"歌手",
+        "path":"pages/Rank/index",
+        "iconFont":"<i class='fa fa-camera-retro'></i>",
+        "iconFontActive":"",
+        "iconImagePath":"",
+        "iconImageActivePath":""
+      },{
+        "text":"排行",
+        "path":"pages/Singer/index",
+        "iconFont":"<i class='fa fa-camera-retro'></i>",
+        "iconFontActive":"",
+        "iconImagePath":"",
+        "iconImageActivePath":""
+      },{
+        "text":"歌单",
+        "path":"pages/Song/index",
+        "iconFont":"<i class='fa fa-camera-retro'></i>",
+        "iconFontActive":"",
+        "iconImagePath":"",
+        "iconImageActivePath":""
+      }
+    ]
+  },
   "commonPage":"pages/Player/index"
 }

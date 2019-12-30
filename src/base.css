@@ -1,0 +1,170 @@
+
+/*** 切换效果css ***/
+.vue-app-effect-out-enter-active,
+.vue-app-effect-out-leave-active,
+.vue-app-effect-in-enter-active,
+.vue-app-effect-in-leave-active {
+  will-change: transform;
+  transition: all 400ms cubic-bezier(.55,0,.1,1);
+  bottom: 0;
+  top: 0;
+  position: absolute;
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+.vue-app-effect-out-enter {
+  opacity: 0;
+  transform: translate3d(-70%, 0, 0);
+}
+.vue-app-effect-out-leave-active {
+  opacity: 0 ;
+  transform: translate3d(70%, 0, 0);
+}
+.vue-app-effect-in-enter {
+  opacity: 0;
+  transform: translate3d(70%, 0, 0);
+}
+.vue-app-effect-in-leave-active {
+  opacity: 0;
+  transform: translate3d(-70%, 0, 0);
+}
+
+/*** 布局css ***/
+#vue-app-effect {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+#vue-app-effect__page-view {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 50px;
+  z-index: 5;
+}
+/*导航路由容器*/
+#vue-app-effect__tab-router-view {
+  width: 100%;
+  height: 100%;
+}
+#vue-app-effect__tab-router-view .bd-view {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+#vue-app-effect__tab-router-view .bd-view.bd-view-full {
+  top: 0;
+}
+#vue-app-effect__tab-router-view .bd-view .container {
+  position: relative;
+}
+/*子路由容器*/
+#vue-app-effect__sub-router-view {
+  position: relative;
+  width: 100%;
+  height: calc(100% + 50px);
+  background: #252525;
+  z-index: 12;
+}
+#vue-app-effect__sub-router-view .bd-view {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+#vue-app-effect__sub-router-view .bd-view.bd-view-full {
+  top: 0;
+}
+#vue-app-effect__sub-router-view .bd-view .container {
+  position: relative;
+}
+
+/*导航栏*/
+#vue-app-effect__tab-bar {
+  height: 50px;
+  background: #252525;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+}
+#vue-app-effect__tab-bar .nav {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+#vue-app-effect__tab-bar .nav .bar {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ccc;
+  text-align: center;
+}
+#vue-app-effect__tab-bar .nav .bar.router-link-active {
+  color: #ffcd32;
+}
+#vue-app-effect__tab-bar .nav .bar .icon {
+  font-size: 23px;
+}
+#vue-app-effect__tab-bar .nav .bar .text {
+  font-size: 10px;
+}
+
+/*顶部导航栏样式*/
+.hd-view {
+  display: flex;
+  height: 40px;
+  font-size: 16px;
+  line-height: 40px;
+  text-align: center;
+  color: #ffcd32;
+  width: 100%;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  transition: background 0.4s;
+}
+.hd-view.bg {
+  transition: background 0.4s;
+  background: #252525;
+}
+.hd-view .title {
+  flex: 1;
+  text-align: center;
+}
+.hd-view .back-btn {
+  flex: 40px 0 0;
+  font-size: 28px;
+  text-align: center;
+}
+.hd-view .back-btn.hide {
+  visibility: hidden;
+}
+.hd-view .show-cd {
+  flex: 40px 0 0;
+  font-size: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hd-view .show-cd .pi {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #ffcd32;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

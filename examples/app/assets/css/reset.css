@@ -1,5 +1,7 @@
 @import url("https://cdn.bootcss.com/normalize/8.0.0/normalize.min.css");
 @import url("https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url("https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css");
+
 html,body{
   height: 100%;
   background: #252525

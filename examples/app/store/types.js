@@ -1,0 +1,15 @@
+export const togglePlayer = "togglePlayer";
+export const playAll = "playAll";
+export const playOne = "playOne";
+export const playAdd = "playAdd";
+export const playSome = "playSome";
+export const delOne = "delOne";
+export const next = "next";
+export const prev = "prev";
+export const play = "play";
+export const pause = "pause";
+export const repeat = "repeat";
+export const random = "random";
+export const playBackType = "playBackType";
+export const clearList = "clearList";
+export const playMv = "playMv";
