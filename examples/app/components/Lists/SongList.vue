@@ -3,11 +3,14 @@
   <div class='list' v-for="(item,index) in musicList" :key="index">
     <div class='number'>{{index+1}}</div>
     <div class='detail' @click='handlePlayOne(index)'>
-      <div class='songname-box'><div class='songname'>{{item.songname}}</div></div>
-      <div class='albumname-box'><div class='albumname'>{{item.singer}} · {{item.albumname}}</div></div>
+      <div class='songname-box'><div class='songname'>{{item.song_name}}</div></div>
+      <div class='albumname-box'>
+        <div class='albumname' v-if="item.singers">{{item.singers | nameArrgs }} · {{item.album_name}}</div>
+        <div class='albumname' v-else-if="item.album_name">专辑: {{item.album_name }}</div>
+      </div>
     </div>
     <div class='time' @click='handleAddSong(index)'>
-      <div class='c'>+</div>
+      <Icon type="md-add" />
     </div>
   </div>
 </div>
@@ -25,6 +28,15 @@ export default {
   data () {
     return {}
   },
+  filters:{
+    nameArrgs(val){
+      let names = '';
+      val.map(item=>{
+        names+=item.name
+      })
+      return names
+    }
+  },
   computed: {
     ...mapGetters([
       'playerList'
@@ -34,51 +46,40 @@ export default {
     ...mapMutations([
       'playOne',
       'togglePlayer',
-      'playAdd',
-      'playBackType'
+      'playAdd'
     ]),
     // 点击播放
     handlePlayOne (index) {
-      this.$router.push({
-        path: `/player`
-      })
-      this.playBackType('ios')
       // 添加到列表
-      this.playOne(this.getSong(index))
+      this.playOne(this.musicList[index])
       // 打开播放器
       this.togglePlayer()
-      // 播放
-      let timer = setTimeout(() => {
-        this.audio = document.getElementById('audio')
-        this.audio.play()
-        clearTimeout(timer)
-      }, 100)
     },
     // 点击添加歌曲
     handleAddSong (index) {
-      let notice = ''
-      if (this.isIn(index) === -1) {
-        this.playAdd(this.getSong(index))
-        notice = '添加成功'
-      } else {
-        notice = '歌曲已存在'
-      }
-      this.$toast(notice, {duration: '800'})
+      // let notice = ''
+      // if (this.isIn(index) === -1) {
+      this.playAdd(this.musicList[index])
+      //   notice = '添加成功'
+      // } else {
+      //   notice = '歌曲已存在'
+      // }
+      this.$toast('添加成功', {duration: '800'})
     },
     // 获取歌曲对象
-    getSong (index) {
-      let find = this.isIn(index)
-      if (find === -1) {
-        return this.musicList[index]
-      } else {
-        return find
-      }
-    },
+    // getSong (index) {
+    //   let find = this.isIn(index)
+    //   if (find === -1) {
+    //     return this.musicList[index]
+    //   } else {
+    //     return find
+    //   }
+    // },
     // 判断添加歌曲是否已经在列表
-    isIn (index) {
-      let songid = this.musicList[index].songid
-      return this.playerList.findIndex(song => song.songid === songid)
-    }
+    // isIn (index) {
+    //   let song_id = this.musicList[index].song_id
+    //   return this.playerList.findIndex(song => song.song_id === song_id)
+    // }
   }
 }
 </script>
@@ -96,7 +97,8 @@ export default {
   flex: 0 0 50px;
   display: flex;
   justify-content: center;
-  align-items: center
+  align-items: center;
+  font-size: 15px;
 }
 .songlist .list .detail{
   flex: 1;
@@ -138,20 +140,10 @@ export default {
   word-wrap: normal;
 }
 .songlist .list .time{
-  font-size: 12px;
+  font-size: 20px;
   flex: 0 0 70px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.songlist .list .time .c{
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  line-height: 18px;
-  border: 1px solid #ccc;
-  color: #ccc;
-  font-size: 15px;
 }
 </style>

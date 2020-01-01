@@ -1,5 +1,5 @@
 <template>
-  <PageView
+  <PageScrollView
     isTab
     title="song"
     :pullRefresh="pullRefresh"
@@ -8,7 +8,7 @@
   >
     <div>sfafaf</div>
     <div class="num" slot="position">{{ y }}</div>
-  </PageView>
+  </PageScrollView>
 </template>
 
 <script>

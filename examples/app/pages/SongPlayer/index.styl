@@ -1,0 +1,294 @@
+@import '../../assets/css/common';
+
+#song-player
+  .player
+    position fixed
+    top 0
+    left 0
+    bottom 0
+    right 0
+    background #232332
+    overflow hidden
+    color #fff
+    z-index 12
+    .play-bg
+      position absolute
+      top 0
+      left 0
+      bottom 0
+      right 0
+      width: 100%
+      height: 100%
+      background: #353535;
+      -webkit-filter: blur(30px)
+      filter: blur(30px)
+      opacity: 0.5
+      z-index -1
+      .background
+        width: 300%;
+        transform: translate3d(-50%, -30%, 0)
+    .play-title
+      height 44px;
+      display flex
+      font-size $fontXM
+      text-align center
+      color #fff
+      width 100%
+      position relative
+      z-index 10
+      &:after
+        background rgba(255,255,255,0.1)
+      .title
+        flex 1
+        text-align center
+        .song-name
+          margin-top 8px
+          font-size 16px
+          line-height 20px
+          height 20px
+          position relative
+        .singer-name
+          font-size 10px
+          height 15px
+          color rgba(255,255,255,0.7)
+          position relative
+        .pix
+          position absolute
+          top: 0
+          left 0
+          right 0
+          bottom: 0
+          overflow hidden
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-wrap: normal;
+
+      .back-btn
+        flex 45px 0 0
+        font-size 28px
+        text-align center
+      .show-cd
+        flex 45px 0 0
+        font-size 26px
+        text-align center
+        position relative
+    .play-center
+      width: 100%;
+      position: absolute;
+      bottom: 100px;
+      left: 0;
+      right: 0;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .toggleShow{
+        z-index: 6;
+        opacity: 1;
+        transition: opacity 0.3s ease-in
+      }
+      .toggleHide{
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.3s ease-in
+      }
+      .circle
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        border:10px solid rgba(255, 255, 255, 0.2);
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        &:before
+          display: block;
+          content: " ";
+          width: 100%;
+          height: 100%;
+          border:50px solid rgba(33, 33, 33, 1);
+          border-radius: 50%;
+          position: absolute;
+          top 0
+          left 0;
+          bottom 0;
+          right 0;
+          z-index: 1
+        .cd
+          width: 195px;
+          height: 195px;
+          border-radius: 50%;
+          position: relative;
+          z-index: 2;
+          background: rgba(255, 255, 255, 0.4);
+          animation: rotate 20s linear infinite;
+          &.paused
+            animation-play-state:paused
+      .lyric
+        transition: all 0.5 easing
+        position absolute
+        top: 44px
+        left 10px
+        right 10px
+        bottom: 41px
+        overflow hidden
+        text-align: center
+        &.center
+          justify-content center
+          align-items: center
+          display flex
+        .list
+          list-style none
+          line-height: 28px
+          font-size: 14px
+          color rgba(255,255,255,0.5)
+          &.current
+            color rgba(255,255,255,1)
+    .play-bottom
+      color: rgba(255,255,255,0.8)
+      width: 100%;
+      height: 100px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      .play-progress
+        display: flex;
+        margin-bottom: 20px;
+        font-size: 10px;
+        text-align: center;
+        height: 15px;
+        line-height:15px;
+        font-size 12px
+        .this-time
+          flex: 0 0 70px;
+        .progress-box
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .progress
+            width: 100%;
+            margin: 0;
+        .all-time
+          flex: 0 0 70px;
+      .play-buttons
+        display: flex;
+        .button
+          vertical-align: middle
+          text-align: center;
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 23px;
+          .loops
+            font-size: 30px
+            i
+              font-weight: 700 !important;
+        .cltr
+          font-size: 35px
+          height: 50px;
+          position relative
+          top: -2px
+    .play-list
+      height: 100%;
+      width: 100%
+      position: absolute;
+      bottom: 0;
+      z-index: 20;
+      transform: translate3d(0,100%,0)
+      transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+      &.list-show
+        transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+        transform: translate3d(0,0,0)
+        .play-list-bg
+          opacity 0.5
+      .play-list-bg
+        height 100%
+        width: 100%
+        position: absolute;
+        bottom: 0;
+        background: rgba(0,0,0,0.4);
+        opacity 0
+        z-index 2
+      .play-list-container
+        height 75%
+        width: 100%
+        position: absolute;
+        bottom: 0;
+        background: rgba(0,0,0,0.8);
+        z-index 3
+
+        .play-list-nav
+          display: flex;
+          height: 50px;
+          position relative
+          font-size: 14px
+          .nav-state
+            flex: 0 0 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          .nav-center
+            flex: 1
+          .nav-clear
+            flex: 0 0 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .icon
+              font-size: 15px
+        .play-list-scroll
+          position: absolute;
+          top: 50px;
+          left: 0;
+          right: 0;
+          bottom: 50px;
+          overflow hidden
+        .close
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          font-size: 30px
+          height: 50px;
+          width: 100%;
+          text-align: center;
+          line-height: 50px;
+
+@media screen and (max-width:480px)
+  #song-player .player .play-center
+    .circle
+      width: 300px;
+      height: 300px;
+      &:before
+        border-width 45px
+      .cd
+        width: 182px;
+        height: 182px;
+@media screen and (max-width:375px)
+  #song-player .player .play-center
+    .circle
+      width: 270px;
+      height: 270px;
+      &:before
+        border-width 40px
+      .cd
+        width: 167px;
+        height: 167px;
+@media screen and (max-width:320px)
+  #song-player .player .play-center
+    .circle
+      width: 250px;
+      height: 250px;
+      &:before
+        border-width 35px
+      .cd
+        width: 158px;
+        height: 158px;
+
+@keyframes rotate{
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+

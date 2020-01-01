@@ -4,9 +4,9 @@
       <div class='detail' @click='getPlay(index)'>
         <img ref="img" class='img' v-lazy='{src:item.mv_pic,error:defaultImg,loading:defaultImg}'>
         <div class="title-box">
-          <div class='title'>{{item.mv_name}}</div>
+          <div class='title'>{{item.mv_title}}</div>
         </div>
-        <div class='date'><i class='fa fa-video-camera'></i> {{item.play_str}}</div>
+        <div class='date'><Icon type="ios-videocam" /> {{item.listen_str}}</div>
       </div>
     </div>
   </div>
@@ -27,17 +27,17 @@ export default {
   methods: {
     getPlay (index) {
       let data = this.mvlist[index]
-      this.$router.push({
-        name: '/mvplayer',
-        params: { data }
-      })
+      this.$vueAppEffect.next({
+        path: `/pages/MvPlayer/index`,
+        params: { mid: data.mv_mid}
+      });
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-@import '~@/assets/css/common'
+@import '~@/assets/css/variable'
 #mvlist
   color:rgba(255,255,255,0.5)
   display flex

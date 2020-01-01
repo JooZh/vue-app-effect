@@ -1,5 +1,5 @@
 <template>
-  <PageView isTab>
+  <PageScrollView isTab>
     <div class="container">
         <!-- <Swiper :items="imageList"></!-->
         <div class="hd">精选MV</div>
@@ -8,7 +8,7 @@
       <div class="pulldown-wrapper">
         <Loading v-show="showLoading"></Loading>
       </div>
-  </PageView>
+  </PageScrollView>
 </template>
 
 <script>

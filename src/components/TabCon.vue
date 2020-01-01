@@ -8,6 +8,6 @@
 
 <script>
 export default {
-  name: "tabCon"
+  name: "Tab-Con"
 };
 </script>

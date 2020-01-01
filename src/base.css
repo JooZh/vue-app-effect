@@ -44,6 +44,7 @@
   bottom: 50px;
   z-index: 5;
 }
+
 /*导航路由容器*/
 #vue-app-effect__tab-router-view {
   width: 100%;
@@ -63,6 +64,7 @@
 #vue-app-effect__tab-router-view .bd-view .container {
   position: relative;
 }
+
 /*子路由容器*/
 #vue-app-effect__sub-router-view {
   position: relative;
@@ -113,10 +115,11 @@
   color: #ffcd32;
 }
 #vue-app-effect__tab-bar .nav .bar .icon {
-  font-size: 23px;
+  font-size: 20px;
 }
 #vue-app-effect__tab-bar .nav .bar .text {
   font-size: 10px;
+  line-height: 18px;
 }
 
 /*顶部导航栏样式*/

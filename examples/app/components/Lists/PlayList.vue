@@ -1,31 +1,33 @@
 <template>
-  <div class>
-    <ul class="songlist">
-      <li
-        class="list"
-        v-for="(item,index) in playerList"
-        :class="{'del':deleteIndex==index,'active':playSongindex == index}"
-        :key="index"
-      >
-        <div class="number">
-          <Icon v-if="playSongindex == index" type="md-stats" />
-          <Icon v-else type="md-musical-notes" />
-        </div>
-        <div class="detail" @click.stop="changeSong(index)">
-          <div class="songname text-line">
-            <div class="pix">{{item.songname}}</div>
+  <div class="scroll-layout">
+    <ScrollView :data="playerList" :scrollingY="true">
+      <ul class="songlist">
+        <li class="list"
+          v-for="(item,index) in playerList"
+          :class="{'del':deleteIndex==index,'active':playSongindex == index}"
+          :key="index"
+        >
+          <div class="number">
+            <Icon v-if="playSongindex == index" type="md-stats" />
+            <Icon v-else type="md-musical-notes" />
           </div>
-          <div class="albumname text-line">
-            <div class="pix">{{item.singer}} · {{item.albumname}}</div>
+          <div class="detail" @click.stop="changeSong(index)">
+            <div class="songname text-line">
+              <div class="pix">{{item.song_name}}</div>
+            </div>
+            <div class="albumname text-line">
+              <div class='pix' v-if="item.singers">{{item.singers | nameArrgs }} · {{item.album_name}}</div>
+              <div class='pix' v-else-if="item.album_name">专辑: {{item.album_name }}</div>
+            </div>
           </div>
-        </div>
-        <div class="time">
-          <div class="c" @click.stop="deleteSong(index)">
-            <Icon type="md-close" />
+          <div class="time">
+            <div class="c" @click.stop="deleteSong(index)">
+              <Icon type="md-close" />
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </ScrollView>
   </div>
 </template>
 
@@ -36,6 +38,15 @@ export default {
     return {
       deleteIndex: -1
     };
+  },
+  filters:{
+    nameArrgs(val){
+      let names = '';
+      val.map(item=>{
+        names+=item.name
+      })
+      return names
+    }
   },
   computed: {
     ...mapGetters(["playerList", "playSongindex"])
@@ -57,24 +68,26 @@ export default {
 };
 </script>
 
-<style scoped>
-.container {
-  top: 50px;
-  bottom: 50px;
-}
-.songlist {
-  color: #e5e5e5;
-  font-size: 14px;
-  padding: 10px 0;
-}
-.songlist .list {
-  display: flex;
-  /* padding: 10px 0; */
-  height: 55px;
-  /* margin: 10px 0; */
-  padding: 8px 0 8px 0;
-  position: relative;
-}
+<style lang="stylus" scoped>
+.scroll-layout
+  position: absolute;
+  top: 50px
+  bottom: 50px
+  left 0
+  right 0
+  .songlist {
+    color: #e5e5e5;
+    font-size: 14px;
+    padding: 10px 0;
+  }
+  .songlist .list {
+    display: flex;
+    /* padding: 10px 0; */
+    height: 55px;
+    /* margin: 10px 0; */
+    padding: 8px 0 8px 0;
+    position: relative;
+  }
 .songlist .list.del {
   transition: all 0.3s;
   height: 0;

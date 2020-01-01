@@ -5,14 +5,17 @@
         <router-view id="vue-app-effect__page-view"></router-view>
       </vnode-cache>
     </transition>
+    <component :is="commonComponent"></component>
     <TabBar v-show="Direction.isTabBar"></TabBar>
   </div>
 </template>
 <script>
+import {config, getComponent} from '../util.js'
 export default {
-  name: "App",
+  name: "App-Root",
   data() {
     return {
+      commonComponent: getComponent(config.commonComponent),
       Direction: {
         type: "",
         isTabBar: true,

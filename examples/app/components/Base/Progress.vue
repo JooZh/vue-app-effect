@@ -37,6 +37,15 @@ export default {
   },
   mounted () {
   },
+  watch: {
+    percent (newPercent) {
+      if (newPercent >= 0 && !this.touch.initiated) {
+        const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
+        const offsetWidth = newPercent * barWidth
+        this._offset(offsetWidth)
+      }
+    }
+  },
   methods: {
     // 得到触摸点开始的 页面坐标  和进度条的长度
     touchStart (e) {
@@ -76,16 +85,8 @@ export default {
       this.$refs.progress.style.width = offsetWidth + 'px'
       this.$refs.progressBtn.style.transform = `translate3d(${offsetWidth}px,0,0)`
     }
-  },
-  watch: {
-    percent (newPercent) {
-      if (newPercent >= 0 && !this.touch.initiated) {
-        const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
-        const offsetWidth = newPercent * barWidth
-        this._offset(offsetWidth)
-      }
-    }
   }
+
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <PageView title="视频" isTab>
+  <PageScrollView title="视频" isTab>
     <div class="mvlist">
       <div class="list" v-for="(item, index) in items" :key="index">
         <div class="detail" @click="goDetail(index + 1, `MV`)">
@@ -11,7 +11,7 @@
         </div>
       </div>
     </div>
-  </PageView>
+  </PageScrollView>
 </template>
 <script>
 export default {

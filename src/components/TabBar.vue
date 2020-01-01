@@ -18,6 +18,7 @@
 <script>
 import {config} from '../util.js'
 export default {
+  name: "Tab-Bar",
   data() {
     let tabBar = config.tabBar;
     return {

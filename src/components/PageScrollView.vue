@@ -4,14 +4,33 @@
       <div id="vue-app-effect__sub-router-view">
         <Navigation v-if="title" :title="title" :backShow="!isTab"></Navigation>
         <div class="bd-view" :class="{ 'bd-view-full': !title }">
-          <slot></slot>
+          <ScrollView
+            :scrollingY="true"
+            :pullRefresh="pullRefresh"
+            :reachBottom="reachBottom"
+            :onScroll="onScroll"
+            :data="data"
+          >
+            <slot></slot>
+          </ScrollView>
+          <slot name="position"></slot>
         </div>
       </div>
     </template>
+
     <template v-else>
       <Navigation v-if="title" :title="title" :backShow="!isTab"></Navigation>
       <div class="bd-view" :class="{ 'bd-view-full': !title }">
-        <slot></slot>
+        <ScrollView
+          :scrollingY="true"
+          :pullRefresh="pullRefresh"
+          :reachBottom="reachBottom"
+          :onScroll="onScroll"
+          :data="data"
+        >
+          <slot></slot>
+        </ScrollView>
+        <slot name="position"></slot>
       </div>
     </template>
   </div>
@@ -28,6 +47,10 @@ export default {
       type: Boolean,
       default: false,
       discription: "是否是tab页面"
+    },
+    data:{
+      type: [Array,Object,Number],
+      discription: "监听数据"
     },
     title: {
       type: String,
