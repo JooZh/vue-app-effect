@@ -23,7 +23,6 @@ export const recommendMvDetailAll = params =>{
   })
 }
 
-
 // 歌手相关
 export const singerList = params =>{
   return sendRequest({
@@ -87,6 +86,20 @@ export const songLyric = params =>{
 export const songDetail = params =>{
   return sendRequest({
     path: API_HOST + '/song_detail',
+    params: params
+  })
+}
+
+// 歌单相关
+export const AlbumDetail = params =>{
+  return sendRequest({
+    path: API_HOST + '/album_detail',
+    params: params
+  })
+}
+export const AlbumList = params =>{
+  return sendRequest({
+    path: API_HOST + '/album_list',
     params: params
   })
 }

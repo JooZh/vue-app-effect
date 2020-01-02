@@ -1,9 +1,5 @@
 <template>
-  <PageScrollView
-    :title="headerTitle"
-    :data="songlist"
-    :onScroll="onScroll"
-  >
+  <PageScrollView :title="headerTitle" :data="songlist" :onScroll="onScroll" >
     <div id="ranking-list">
       <div class="container">
         <div id='infos' class='infos'>
@@ -14,28 +10,16 @@
             <img class='min-avatar' v-lazy='{src:img,error:defaultImg,loading:defaultImg}'>
             <div class='info'>
               <div class='name'>{{topInfo.pts}}</div>
-              <div ref="title" class='fans'>{{topInfo.listen_str}} 粉丝</div>
+              <div class='fans'>{{topInfo.listen_str}} 粉丝</div>
               <div class='fans'>{{topInfo.update_time}} 更新</div>
             </div>
           </div>
         </div>
-        <TabPosition
-          @playAll="handlePlayAll"
-          :show="true"
-          :total="topInfo.total"
-        >
-        </TabPosition>
+        <TabPosition @playAll="handlePlayAll" :show="true" :total="topInfo.total" />
         <SongList :musicList="songlist"></SongList>
       </div>
     </div>
-    <TabPosition
-      slot="position"
-      @playAll="handlePlayAll"
-      :total="topInfo.total"
-      :show="fixed"
-      :fixed="fixed"
-    >
-    </TabPosition>
+    <TabPosition slot="position" @playAll="handlePlayAll" :total="topInfo.total" :show="fixed" :fixed="fixed" />
   </PageScrollView>
 </template>
 
@@ -55,8 +39,6 @@ export default {
   data () {
     return {
       tabTop: 220,
-      headerBg: false,
-      showTitle: '',
       headerTitle: '',
       img:'',
 
@@ -76,23 +58,9 @@ export default {
   methods: {
     ...mapMutations([
       'playAll',
-      'play',
-      'playBackType'
     ]),
     handlePlayAll () {
-      // this.$vueAppEffect.next({
-      //   path: `/pages/SongPlayer/index`
-      // });
-      // this.$router.push({
-      //   path: `/player`
-      // })
-      // this.playBackType('ios')
       this.playAll(this.songlist)
-      // let timer = setTimeout(() => {
-      //   this.audio = document.getElementById('audio')
-      //   this.audio.play()
-      //   clearTimeout(timer)
-      // }, 100)
     },
     onScroll (pos) {
       this.fixed = this.tabTop - pos.y <= 0
@@ -105,8 +73,7 @@ export default {
         this.topInfo = topInfo
         this.songlist = res.song_list
         // 吸顶效果
-        this.tabTop = this.$refs.tab.getBoundingClientRect().top - 40
-        this.title = this.$refs.title.getBoundingClientRect().top
+        // this.tabTop = this.$refs.tab.getBoundingClientRect().top - 40
       })
     }
   }

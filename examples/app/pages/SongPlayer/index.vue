@@ -13,9 +13,7 @@
               <div class="pix">{{playSongSinger}}</div>
             </div>
           </div>
-          <div class="show-cd">
-            <Icon type="ios-disc"/>
-          </div>
+          <div class="show-cd"><Icon type="ios-disc"/></div>
         </div>
         <div class='play-bg'>
           <img class='background' :src='playSongImage' :onerror="defaultImg">
@@ -24,11 +22,7 @@
           <div class="circle" @click="toggleLyric" :class="{'toggleShow':playLyricShow,'toggleHide':!playLyricShow}">
             <img class="cd" :class="{'paused':!playStatus}" :src='playSongImage' :onerror="defaultImg">
           </div>
-          <div
-            ref="lyric"
-            @click="toggleLyric"
-            class="lyric"
-            :class="{'center': playLyric.length == 1,'toggleShow':!playLyricShow,'toggleHide':playLyricShow}">
+          <div ref="lyric" @click="toggleLyric" class="lyric" :class="{'center': playLyric.length == 1,'toggleShow':!playLyricShow,'toggleHide':playLyricShow}">
             <ScrollView :data="playLyric" :scrollingY="true">
               <div
                 class="list"
@@ -105,14 +99,7 @@
           </div>
         </div>
       </div>
-      <audio
-        id='audio'
-        ref="audio"
-        @canplay="onCanplay"
-        @timeupdate="onTimeUpdate"
-        @ended="onEnded"
-        :src="playSongUrl">
-      </audio>
+      <audio id='audio' ref="audio" @canplay="onCanplay" @timeupdate="onTimeUpdate" @ended="onEnded" :src="playSongUrl"></audio>
     </div>
 </template>
 

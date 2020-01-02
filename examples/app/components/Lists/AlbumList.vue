@@ -1,13 +1,13 @@
 <template>
   <div class='lists'>
-  <div class='list' v-for="(item,index) in albumList" :key="index">
-    <div class='detail' @click='getDetail(item.album_mid,item.album_name)'>
-      <img class='img' v-lazy='{src:item.album_pic,error:defaultImg,loading:defaultImg}'>
-      <div class='title'>{{item.album_name}}</div>
-      <div class='date'>{{item.pub_time}}</div>
+    <div class='list' v-for="(item,index) in albumList" :key="index">
+      <div class='detail' @click='getDetail(item.album_mid,item.album_name)'>
+        <img class='img' v-lazy='{src:item.album_pic,error:defaultImg,loading:defaultImg}'>
+        <div class='title'>{{item.album_name}}</div>
+        <div class='date'>{{item.pub_time}}</div>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -25,23 +25,10 @@ export default {
   },
   methods: {
     getDetail (mid, title) {
-      let newPath = `/menu/${mid}`
-      let newRoute = [{
-        path: newPath,
-        name: newPath,
-        component: {extends: this.$router.extends.AlbumDetail}
-      }]
-      // 判断路由是否存在 不存在 添加一个新路由
-      let find = this.$router.options.routes.findIndex(item => item.path === newPath)
-      if (find === -1) {
-        this.$router.options.routes.push(newRoute[0])
-        this.$router.addRoutes(newRoute)
-      }
-      // 存在直接跳转到路由
-      this.$router.push({
-        name: newPath,
+      this.$vueAppEffect.next({
+        path: `/pages/AlbumDetail/index`,
         params: {id: mid, title: title}
-      })
+      });
     }
   }
 }

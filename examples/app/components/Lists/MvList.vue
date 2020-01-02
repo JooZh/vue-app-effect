@@ -6,7 +6,7 @@
         <div class="title-box">
           <div class='title'>{{item.mv_title}}</div>
         </div>
-        <div class='date'><Icon type="ios-videocam" /> {{item.listen_str}}</div>
+        <div class='date'><Icon type="ios-videocam" /> {{item.play_str}}</div>
       </div>
     </div>
   </div>
