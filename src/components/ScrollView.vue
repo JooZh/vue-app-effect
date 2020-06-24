@@ -6,21 +6,14 @@
     :onPullRefresh="pullRefresh"
     :onReachBottom="reachBottom"
     :onScroll="onScroll"
-    :data="items"
   >
-    <div class="container">
-      <slot></slot>
-    </div>
+    <slot></slot>
   </vue-app-scroller>
 </template>
 <script>
 export default {
   name: "Scroll-View",
   props: {
-    data:{
-      type: [Array,Object,Number],
-      discription: "监听数据"
-    },
     scrollingY: {
       type: Boolean,
       default: false,
@@ -46,21 +39,6 @@ export default {
       default: null,
       discription: "监听滚动函数"
     }
-  },
-  watch:{
-    data(val){
-      this.items = val
-    }
-  },
-  data() {
-    return {
-      items: []
-    };
-  },
-  mounted() {
-    setTimeout(() => {
-      this.items = new Array(5);
-    }, 500);
   }
 };
 </script>

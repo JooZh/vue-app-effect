@@ -9,6 +9,7 @@ function install (Vue,bus,tabbar){
     },
     back: ()=>{
       window.$VueAppEffect.paths.pop()
+      vm.$router.options.routes.pop();
       window.vm.$router.replace({
         name: window.$VueAppEffect.paths.concat([]).pop()
       })

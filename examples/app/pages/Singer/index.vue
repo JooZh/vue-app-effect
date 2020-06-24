@@ -41,7 +41,7 @@
     </div>
     <!-- 列表 -->
     <div class="singers-list">
-      <ScrollView :scrollingY="true" :reachBottom="onPullingUp" :data="singerlist">
+      <ScrollView :scrollingY="true" :reachBottom="onPullingUp">
         <div class='singers' v-if="singerlist.length>0">
           <div class='singer' v-for="(item,index) in singerlist" :key="index" @click='openSinger(item.singer_mid,item.singer_name)'>
             <img class='avatar' v-lazy='{src:item.singer_avatar,error:defaultImg,loading:defaultImg}'>

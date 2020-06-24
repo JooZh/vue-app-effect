@@ -1,6 +1,6 @@
 <template>
   <div class='lists'>
-    <div class='list' v-for="(item,index) in albumList" :key="index">
+    <div class='list' v-for="(item,index) in data" :key="index">
       <div class='detail' @click='getDetail(item.album_mid,item.album_name)'>
         <img class='img' v-lazy='{src:item.album_pic,error:defaultImg,loading:defaultImg}'>
         <div class='title'>{{item.album_name}}</div>
@@ -13,7 +13,7 @@
 <script>
 export default {
   props: {
-    albumList: {
+    data: {
       type: Array,
       description: '专辑列表'
     }

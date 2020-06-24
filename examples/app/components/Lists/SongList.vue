@@ -1,6 +1,6 @@
 <template>
 <div class='songlist'>
-  <div class='list' v-for="(item,index) in musicList" :key="index">
+  <div class='list' v-for="(item,index) in data" :key="index">
     <div class='number'>{{index+1}}</div>
     <div class='detail' @click='handlePlayOne(index)'>
       <div class='songname-box'><div class='songname'>{{item.song_name}}</div></div>
@@ -20,7 +20,7 @@
 import { mapMutations, mapGetters } from 'vuex'
 export default {
   props: {
-    musicList: {
+    data: {
       type: Array,
       description: '歌曲列表'
     }
@@ -51,7 +51,7 @@ export default {
     // 点击播放
     handlePlayOne (index) {
       // 添加到列表
-      this.playOne(this.musicList[index])
+      this.playOne(this.data[index])
       // 打开播放器
       this.togglePlayer()
     },
@@ -59,7 +59,7 @@ export default {
     handleAddSong (index) {
       // let notice = ''
       // if (this.isIn(index) === -1) {
-      this.playAdd(this.musicList[index])
+      this.playAdd(this.data[index])
       //   notice = '添加成功'
       // } else {
       //   notice = '歌曲已存在'
@@ -70,14 +70,14 @@ export default {
     // getSong (index) {
     //   let find = this.isIn(index)
     //   if (find === -1) {
-    //     return this.musicList[index]
+    //     return this.data[index]
     //   } else {
     //     return find
     //   }
     // },
     // 判断添加歌曲是否已经在列表
     // isIn (index) {
-    //   let song_id = this.musicList[index].song_id
+    //   let song_id = this.data[index].song_id
     //   return this.playerList.findIndex(song => song.song_id === song_id)
     // }
   }

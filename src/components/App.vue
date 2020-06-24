@@ -5,7 +5,7 @@
         <router-view id="vue-app-effect__page-view"></router-view>
       </vnode-cache>
     </transition>
-    <component :is="commonComponent"></component>
+    <component v-if="showComponent" :is="commonComponent"></component>
     <TabBar v-show="Direction.isTabBar"></TabBar>
   </div>
 </template>
@@ -15,6 +15,7 @@ export default {
   name: "App-Root",
   data() {
     return {
+      showComponent: config.commonComponent,
       commonComponent: getComponent(config.commonComponent),
       Direction: {
         type: "",

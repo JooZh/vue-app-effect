@@ -34,6 +34,7 @@
   width: 100%;
   height: 100%;
   position: relative;
+  overflow: hidden;
 }
 #vue-app-effect__page-view {
   width: 100%;

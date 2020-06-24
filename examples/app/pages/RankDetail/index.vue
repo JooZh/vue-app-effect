@@ -1,5 +1,5 @@
 <template>
-  <PageScrollView :title="headerTitle" :data="songlist" :onScroll="onScroll" >
+  <PageScrollView :title="headerTitle" :onScroll="onScroll" >
     <div id="ranking-list">
       <div class="container">
         <div id='infos' class='infos'>
@@ -16,7 +16,7 @@
           </div>
         </div>
         <TabPosition @playAll="handlePlayAll" :show="true" :total="topInfo.total" />
-        <SongList :musicList="songlist"></SongList>
+        <SongList :data="songlist"></SongList>
       </div>
     </div>
     <TabPosition slot="position" @playAll="handlePlayAll" :total="topInfo.total" :show="fixed" :fixed="fixed" />

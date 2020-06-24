@@ -2,14 +2,22 @@
 // import config from "../../../src/app.json";
 
 // function getComponent(name){
-//   return require(`../../../src/${name}`).default
+//   if(name){
+//     return require(`../../../src/${name}`).default
+//   } else {
+//     return null
+//   }
 // }
 
 // develpment
 import config from "../examples/app/app.json";
 
 function getComponent(name){
-    return require(`../examples/app/${name}`).default
+    if(name){
+      return require(`../examples/app/${name}`).default
+    } else {
+      return null
+    }
 }
 
 export {

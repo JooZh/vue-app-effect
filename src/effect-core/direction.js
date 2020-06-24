@@ -1,25 +1,9 @@
 function deriection(router,bus,tabbar,common){
-  // 监听页面主动刷新
-  window.addEventListener('load', () => {
-    // router.replace({path: '/'})
-    // 重置路由序列管理
-    let newVueAppEffect = {
-      count:0,
-      paths:window.$VueAppEffect.paths,
-    }
-    if(common){
-      newVueAppEffect[common] = 9999999
-    }
-    window.$VueAppEffect = newVueAppEffect
-  })
-  // 返回和前进管理
-  window.$VueAppEffect = {
-    'count':0,
-    'paths':[]
-  }
-  if(common){
-    window.$VueAppEffect[common] = 9999999
-  }
+  // 添加一个新的战队列存放
+  router.$task = [];
+  const tabBar = router.options.routes[0].children
+
+  console.log(tabBar)
 
   let isPush = false
   let endTime = Date.now()
@@ -41,13 +25,18 @@ function deriection(router,bus,tabbar,common){
       window.location.href = to.path
       return
     }
+    // 否则保存待跳转的路由
+    router.$task.push(router.history.pending)
+
+    console.log(router)
+
     // 不是外链的情况下
     // 得到来去的路由序列编号
     let toIndex = Number(window.$VueAppEffect[to.path])
     let fromIndex = Number(window.$VueAppEffect[from.path])
     fromIndex = fromIndex ? fromIndex : 0
     // 进入新路由 判断是否为 tabBar
-    let toIsTabBar = tabbar.findIndex(item => item === to.path)
+    let toIsTabBar = tabbar.findIndex(item => item.path === to.path)
     // 当前路由 判断是否为 tabBar
     // let formIsTabBar = tabbar.findIndex(item => item === from.path)
     // 不是进入 tabBar 路由 --------------------------

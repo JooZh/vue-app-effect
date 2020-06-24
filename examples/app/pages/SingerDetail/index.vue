@@ -1,10 +1,5 @@
 <template>
-  <PageScrollView
-    :title="headerTitle"
-    :data="listenData"
-    :reachBottom="onPullingUp"
-    :onScroll="onScroll"
-    >
+  <PageScrollView :title="headerTitle" :reachBottom="onPullingUp" :onScroll="onScroll">
     <div class="singer-detail">
       <div id='infos' class='infos'>
         <div class='singer-bg'>
@@ -16,31 +11,10 @@
           </div>
         </div>
       </div>
-      <TabPosition
-        slot="position"
-        @tabChange="tabChange"
-        :total="totals"
-        :show="true"
-        :index="tabCurrent"
-      ></TabPosition>
-      <div class="mv-list" v-show="tabCurrent==2">
-        <MvList :mvlist="mv.mvList"></MvList>
-      </div>
-      <div class="album-list" v-show="tabCurrent==1">
-        <AlbumList :albumList="album.albumList"></AlbumList>
-      </div>
-      <div class="song-list" v-show="tabCurrent==0">
-        <SongList :musicList="song.musicList"></SongList>
-      </div>
+      <TabPosition @tabChange="tabChange" :total="totals" :show="true" :index="tabCurrent"/>
+      <component :is="componentPlan" :data="componentData" />
     </div>
-    <TabPosition
-      slot="position"
-      @tabChange="tabChange"
-      :index="tabCurrent"
-      :total="totals"
-      :show="fixed"
-      :fixed="fixed"
-    ></TabPosition>
+    <TabPosition slot="position" @tabChange="tabChange" :index="tabCurrent" :total="totals" :show="fixed" :fixed="fixed"/>
   </PageScrollView>
 </template>
 
@@ -61,7 +35,8 @@ export default {
   },
   data () {
     return {
-      listenData: [],
+      componentPlan: SongList,
+      componentData: [],
       headerTitle: '',
       fixed: false,
       totals:{
@@ -109,17 +84,20 @@ export default {
     tabChange (data) {
       this.tabCurrent = data.index
       if (this.tabCurrent === 0) {
-        this.listenData = this.song.musicList
+        this.componentData = this.song.musicList
+        this.componentPlan = SongList
       } else if (this.tabCurrent === 1) {
-        this.listenData = this.album.albumList
+        this.componentData = this.album.albumList
+        this.componentPlan = AlbumList
       } else if (this.tabCurrent === 2) {
-        this.listenData = this.mv.mvList
+        this.componentData = this.mv.mvList
+        this.componentPlan = MvList
       }
     },
     onScroll (pos) {
       this.fixed = 290 - pos.y <= 0
     },
-    onPullingUp () {
+    onPullingUp (done) {
       let timer = setTimeout(() => {
         if (this.tabCurrent === 0) {
           this.getMusicList()
@@ -151,11 +129,10 @@ export default {
         }
         // 合并数组
         this.song.musicList = this.song.musicList.concat(res.list)
-        this.listenData = this.song.musicList
+        this.componentData = this.song.musicList
         // 只加载一次
         this.totals.song_total = res.total
         // 吸顶效果
-        // this.tabTop = this.$refs.tab.getBoundingClientRect().top - 40
         // 设置分页加载数据
         this.song.begin = this.song.begin + this.song.num
       })
@@ -174,7 +151,7 @@ export default {
         // 更新分页加载数据
         this.mv.begin = this.mv.begin + this.mv.num
         if(this.mv.begin>0){
-          this.listenData = this.mv.mvList
+          this.componentData = this.mv.mvList
         }
         this.totals.mv_total = res.total
       })
@@ -193,7 +170,7 @@ export default {
         this.album.albumList = this.album.albumList.concat(res.list)
         this.album.begin = this.album.begin + this.album.num
         if(this.album.begin>0){
-          this.listenData = this.album.albumList
+          this.componentData = this.album.albumList
         }
         this.totals.album_total = res.total
       })

@@ -1,6 +1,6 @@
 <template>
   <div id="mvlist" class='mvlist'>
-    <div class='list' v-for="(item,index) in mvlist" :key="index">
+    <div class='list' v-for="(item,index) in data" :key="index">
       <div class='detail' @click='getPlay(index)'>
         <img ref="img" class='img' v-lazy='{src:item.mv_pic,error:defaultImg,loading:defaultImg}'>
         <div class="title-box">
@@ -15,7 +15,7 @@
 <script>
 export default {
   props: {
-    mvlist: {
+    data: {
       type: Array
     }
   },
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     getPlay (index) {
-      let data = this.mvlist[index]
+      let data = this.data[index]
       this.$vueAppEffect.next({
         path: `/pages/MvPlayer/index`,
         params: { mid: data.mv_mid}

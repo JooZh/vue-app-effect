@@ -2,27 +2,18 @@
   <PageScrollView isTab>
     <div class="container">
         <!-- <Swiper :items="imageList"></!-->
-        <div class="hd">精选MV</div>
-        <Mvlist :mvlist="mvlist"></Mvlist>
-      </div>
-      <div class="pulldown-wrapper">
-        <Loading v-show="showLoading"></Loading>
-      </div>
+      <Mvlist :data="mvlist"></Mvlist>
+    </div>
   </PageScrollView>
 </template>
 
 <script>
 import Mvlist from '@/components/Lists/MvList'
-import Loading from '@/components/Base/Loading'
 import {recommendNewAlbum,recommendMvList } from '@/service/api'
 export default {
   name: 'recomment',
   components: {
-    // Swiper,
-    // Header,
-    // Scroll,
     Mvlist,
-    Loading
   },
   data () {
     return {
@@ -52,21 +43,6 @@ export default {
       recommendMvList().then(res=>{
         this.mvlist = res.mv_list
       })
-
-      // let imageList = new Promise(resolve => {
-      //   this.axios.get(this.X.path.u, {
-      //     params: {
-      //       api: this.X.api.homeFocusImage
-      //     }
-      //   }).then(res => {
-      //     resolve(res.data)
-      //   })
-      // })
-      // Promise.all([mvlist, imageList]).then(values => {
-      //   this.imageList = values[1]
-      //   this.mvlist = values[0]
-      //   this.showLoading = false
-      // })
     }
   }
 }
